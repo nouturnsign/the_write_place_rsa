@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@drawable/text_row_item_border"
+    android:backgroundTint="@color/white"
+    android:layout_height="@dimen/list_item_height"
+    android:layout_marginTop="@dimen/margin_medium"
+    android:layout_marginLeft="@dimen/margin_medium"
+    android:layout_marginRight="@dimen/margin_medium"
+    android:layout_gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <!--TODO: Require a square image-->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="@dimen/profile_picture_diameter"
+        android:layout_height="@dimen/profile_picture_diameter"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:src="@drawable/succ_dragon_cropped"
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+        app:strokeColor="@color/transparent"
+        app:strokeWidth="1dp" />
+
+    <TextView
+        android:id="@+id/profileUsername"
+        android:layout_width="140dp"
+        android:layout_height="@dimen/profile_picture_diameter"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_toEndOf="@id/profilePicture"
+        android:gravity="center_vertical"
+        android:text="@string/example_reviewer_username"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/point"
+        android:layout_width="50dp"
+        android:layout_height="@dimen/profile_picture_diameter"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_toEndOf="@id/profileUsername"
+        android:gravity="center_vertical"
+        android:text="@string/example_reviewer_username"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/profileDate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_picture_diameter"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_toEndOf="@id/point"
+        android:gravity="center_vertical"
+        android:text="@string/mm_dd_yyyy"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/profileDivider"
+        style="@style/divider"
+        android:backgroundTint="@color/black"
+        android:layout_below="@id/profilePicture"
+        android:layout_margin="@dimen/margin_small" />
+
+    <TextView
+        android:id="@+id/essayTitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:layout_below="@id/profileDivider"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:gravity="center"
+        android:text="@string/element_text"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/essayPreview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:layout_below="@id/essayTitle"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:gravity="center"
+        android:text="@string/tap_to_expand"
+        android:textColor="@color/grayHint"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/tagPicture"
+        android:layout_width="120dp"
+        android:layout_height="@dimen/profile_picture_diameter"
+        android:layout_below="@id/essayPreview"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:gravity="left"
+        app:srcCompat="@drawable/engtag" />
+
+</RelativeLayout>

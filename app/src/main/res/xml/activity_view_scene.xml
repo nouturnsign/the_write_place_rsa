@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="100">
+        <KeyFrameSet>
+            <KeyAttribute
+                motion:motionTarget="@+id/close_commentSwipe"
+                motion:framePosition="50"
+                android:alpha="0" />
+            <KeyAttribute
+                motion:motionTarget="@+id/play_commentSwipe"
+                motion:framePosition="50"
+                android:alpha="0" />
+        </KeyFrameSet>
+        <OnSwipe
+            motion:touchAnchorId="@+id/main_container"
+            motion:dragDirection="dragDown"
+            motion:touchAnchorSide="bottom" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:layout_height="602dp"
+            android:layout_width="506dp"
+            android:id="@+id/textView"
+            motion:layout_constraintEnd_toEndOf="@+id/commentBox"
+            motion:layout_constraintStart_toStartOf="@+id/textView"
+            android:layout_marginStart="458dp"
+            android:layout_marginLeft="458dp"
+            motion:layout_constraintTop_toTopOf="@+id/commentBox"
+            motion:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            motion:layout_constraintHorizontal_bias="0.625"
+            motion:layout_constraintVertical_bias="0.0"
+            android:layout_marginEnd="461dp"
+            android:layout_marginRight="461dp"
+            motion:layout_constraintEnd_toStartOf="@+id/commentBox" />
+        <Constraint
+            motion:layout_constraintVertical_bias="0.994"
+            android:layout_height="160dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            motion:layout_constraintTop_toBottomOf="@+id/main_container"
+            android:id="@+id/commentBox"
+            motion:layout_constraintHorizontal_bias="0.0" />
+        <Constraint
+            android:layout_height="16dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="@id/main_container"
+            android:layout_width="407dp"
+            android:id="@+id/main_commentSwipe"
+            motion:layout_constraintBottom_toTopOf="@+id/commentBox"
+            motion:layout_constraintVertical_bias="1.0" />
+        <Constraint
+            android:layout_height="42dp"
+            motion:layout_constraintStart_toStartOf="@id/main_container"
+            motion:layout_constraintTop_toTopOf="@id/main_container"
+            android:layout_width="302dp"
+            android:id="@+id/commentSwipe"
+            motion:layout_constraintVertical_bias="1.0"
+            motion:layout_constraintBottom_toBottomOf="@+id/commentBox"
+            android:layout_marginBottom="160dp" />
+        <Constraint
+            android:layout_height="42dp"
+            android:layout_width="109dp"
+            android:id="@+id/submitButton"
+            motion:layout_constraintStart_toEndOf="@+id/commentSwipe"
+            motion:layout_constraintTop_toBottomOf="@+id/documentView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="@+id/commentBox"
+            android:layout_marginBottom="160dp" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/bottomNavigationView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:alpha="1"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/commentBox"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            motion:layout_constraintTop_toBottomOf="@+id/main_container"
+            motion:layout_constraintHorizontal_bias="0.5"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintVertical_bias="1.0" />
+        <Constraint
+            android:id="@+id/main_container"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            motion:layout_constraintHorizontal_bias="0.0"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            motion:layout_constraintVertical_bias="1.0" />
+        <Constraint
+            android:id="@+id/main_commentSwipe"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="@id/main_container"
+            motion:layout_constraintTop_toTopOf="@id/main_container"
+            motion:layout_constraintStart_toStartOf="@id/main_container"
+            motion:layout_constraintEnd_toEndOf="parent" />
+        <Constraint
+            android:id="@+id/close_commentSwipe"
+            motion:layout_constraintEnd_toEndOf="@id/main_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="@id/main_container"
+            android:layout_marginEnd="16dp"
+            android:alpha="1"
+            motion:layout_constraintTop_toTopOf="@id/main_container" />
+        <Constraint
+            android:layout_height="42dp"
+            android:layout_width="109dp"
+            android:id="@+id/submitButton"
+            motion:layout_constraintStart_toEndOf="@+id/commentSwipe"
+            motion:layout_constraintTop_toBottomOf="@+id/documentView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="@+id/commentBox"
+            android:layout_marginBottom="160dp" />
+
+    </ConstraintSet>
+</MotionScene>

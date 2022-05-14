@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PossibleButtonStyle">
+        <item name="android:textSize">19dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="PossibleEditTextStyle">
+        <item name="android:layout_width">217sp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">72sp</item>
+        <item name="android:inputType">text</item>
+        <!--What does minHeight actually do?-->
+        <item name="android:minHeight">48sp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">"@color/black"</item>
+    </style>
+
+    <style name="PotentialTitleStyle">
+        <item name="android:layout_width">270dp</item>
+        <item name="android:layout_height">83dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">"@color/black"</item>
+    </style>
+
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
+    <style name="rating">
+        <item name="android:gravity">center</item>
+    </style>
+
+</resources>
