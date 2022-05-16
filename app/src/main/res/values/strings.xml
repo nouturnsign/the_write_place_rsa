@@ -49,6 +49,7 @@
     <string name="exit_title">Exit?</string>
     <string name="exit_prompt">Would you like to exit and rate the review?</string>
     <string name="exit">Exit</string>
+    <string name="profile">Profile</string>
 
     <!--Tags-->
     <string-array name="subject_array">

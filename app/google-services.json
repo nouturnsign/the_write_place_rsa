@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "144537031501",
+    "project_id": "the-write-place-ea1e8",
+    "storage_bucket": "the-write-place-ea1e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144537031501:android:6e471ea76972bd0c049d04",
+        "android_client_info": {
+          "package_name": "com.example.readysetappv1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "144537031501-usj1mctgd7rrg05v622vcpb6n6hrv20d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFQLwbk9qNoLvneK5yt1VCCSTEHNwraXE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "144537031501-usj1mctgd7rrg05v622vcpb6n6hrv20d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
