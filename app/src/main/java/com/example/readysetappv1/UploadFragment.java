@@ -32,6 +32,7 @@ import java.util.Map;
 public class UploadFragment extends Fragment {
 
     private static final String TAG = "upload";
+    private EditText documentName_text;
     private EditText link_text;
     private Button submit_button;
     private Spinner spinner1;
@@ -65,6 +66,7 @@ public class UploadFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_upload, container, false);
+        documentName_text = v.findViewById(R.id.name_input);
         link_text = v.findViewById(R.id.link_input);
         submit_button = v.findViewById(R.id.button_input);
         submit_button.setOnClickListener(this::onClickSubmit);
@@ -121,8 +123,9 @@ public class UploadFragment extends Fragment {
     }
 
     private void onClickSubmit(View v) {
-        // TODO: Save link_text.getText() to something useful like User object(?)
-        Toast.makeText(getActivity(), "We got ".concat(link_text.getText().toString()), Toast.LENGTH_LONG).show();
+        String documentName = documentName_text.getText().toString();
+        String url = link_text.getText().toString();
+        createDocument(url, documentName);
     }
 
     private void createDocument(String url, String documentName) {
@@ -137,6 +140,7 @@ public class UploadFragment extends Fragment {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
+                        Toast.makeText(getActivity(), "We got ".concat(documentName), Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

@@ -25,8 +25,9 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <!--Upload Activity-->
-    <string name="insert_google_docs_link_here">Insert Link Here</string>
+    <string name="insert_google_docs_link_here">Link</string>
     <string name="get_shareable_link">Get shareable link</string>
+    <string name="get_shareable_name">Document Name</string>
     <string name="submit">Submit</string>
 
     <!--Somewhere?-->
