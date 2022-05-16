@@ -8,21 +8,22 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class WorkspaceActivity extends AppCompatActivity {
 
     // declaration; objects from xml
-    Button theButton1;
-    Button theButton2;
-    Button theButton3;
-    Button theButton4;
-    Button theButton5;
-    Button theButton6;
+    private Button theButton1;
+    private Button theButton2;
+    private Button theButton3;
+    private Button theButton4;
+    private Button theButton5;
+    private Button theButton6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
-
         // TODO: Use an adapter instead?
         // initialization
         theButton1 = findViewById(R.id.button);

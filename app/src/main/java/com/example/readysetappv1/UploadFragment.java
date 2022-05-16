@@ -2,8 +2,10 @@ package com.example.readysetappv1;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +31,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 public class UploadFragment extends Fragment {
 
+    private static final String TAG = "upload";
     private EditText link_text;
     private Button submit_button;
     private Spinner spinner1;
@@ -116,4 +125,25 @@ public class UploadFragment extends Fragment {
         Toast.makeText(getActivity(), "We got ".concat(link_text.getText().toString()), Toast.LENGTH_LONG).show();
     }
 
+    private void createDocument(String url, String documentName) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> essay = new HashMap<>();
+        essay.put("url", url);
+        //TODO: choose workspace, submit docname query
+        final String WORKSPACE = "ECG";
+        db.collection(WORKSPACE).document(documentName)
+                .set(essay)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+    }
 }
