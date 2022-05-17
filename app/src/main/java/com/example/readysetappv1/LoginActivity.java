@@ -57,6 +57,15 @@ public class LoginActivity extends AppCompatActivity {
                                     .setDisplayName(username)
                                     //.setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
                                     .build();
+                            user.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "User profile updated.");
+                                            }
+                                        }
+                                    });
                             // Goes to workspace activity
                             Intent intent = new Intent(LoginActivity.this, WorkspaceActivity.class);
                             startActivity(intent);

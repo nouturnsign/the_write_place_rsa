@@ -4,9 +4,16 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,12 +22,11 @@ import android.view.ViewGroup;
  */
 public class ProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String USER = "user";
+    final private static String TAG = "Profile Fragment";
 
     // TODO: Rename and change types of parameters
-    private String mUser;
+    private FirebaseUser mUser;
+    private TextView displayName;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -30,14 +36,12 @@ public class ProfileFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param user Parameter 1.
      * @return A new instance of fragment ProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String user) {
+    public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
-        args.putString(USER, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,7 +50,6 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mUser = getArguments().getString(USER);
         }
     }
 
@@ -54,6 +57,17 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        displayName = v.findViewById(R.id.profileUsername);
+        displayName.setText(mUser.getDisplayName());
+        try {
+            Log.d(TAG, "displayName:success".concat(mUser.getDisplayName()));
+        } catch (Exception e) {
+            Log.w(TAG, "displayName:failure", e);
+        }
+
+        return v;
     }
 }
