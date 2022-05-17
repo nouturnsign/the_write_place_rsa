@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -43,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         theRegisterButton.setOnClickListener(this::onClickRegister);
     }
 
-    private void createAccount(String email, String password){
+    private void createAccount(String email, String password, String username){
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -52,6 +53,10 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(username)
+                                    //.setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+                                    .build();
                             // Goes to workspace activity
                             Intent intent = new Intent(LoginActivity.this, WorkspaceActivity.class);
                             startActivity(intent);
@@ -71,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: display username inside app (profile page?)
         // TODO: make sign-out button within profile
         String password = thePasswordEditText.getText().toString();
-        createAccount(email, password);
+        createAccount(email, password, username);
     }
 
     private void verifyCredentials(String email, String password){
