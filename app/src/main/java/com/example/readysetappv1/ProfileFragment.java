@@ -59,10 +59,20 @@ public class ProfileFragment extends Fragment {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         displayName = v.findViewById(R.id.profileUsername);
-        displayName.setText("Username: ".concat(Objects.requireNonNull(mUser.getDisplayName())));
+        try {
+            displayName.setText("Username: ".concat(Objects.requireNonNull(mUser.getDisplayName())));
+            Log.d(TAG, "displayName:success");
+        } catch (NullPointerException e) {
+            Log.w(TAG, "displayName:failure", e);
+        }
 
         email = v.findViewById(R.id.profileEmail);
-        email.setText("Email: ".concat(Objects.requireNonNull(mUser.getEmail())));
+        try {
+            email.setText("Email: ".concat(Objects.requireNonNull(mUser.getEmail())));
+            Log.d(TAG, "email:success");
+        } catch (NullPointerException e) {
+            Log.w(TAG, "email:failure", e);
+        }
 
         return v;
     }
