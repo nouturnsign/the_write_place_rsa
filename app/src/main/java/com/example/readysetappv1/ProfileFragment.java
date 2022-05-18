@@ -23,8 +23,6 @@ import java.util.Objects;
 public class ProfileFragment extends Fragment {
 
     final private static String TAG = "Profile Fragment";
-
-    // TODO: Rename and change types of parameters
     private FirebaseUser mUser;
     private TextView displayName;
 
@@ -38,7 +36,6 @@ public class ProfileFragment extends Fragment {
      *
      * @return A new instance of fragment ProfileFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -49,8 +46,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+//        if (getArguments() != null) {
+//        }
     }
 
     @Override
@@ -62,11 +59,6 @@ public class ProfileFragment extends Fragment {
 
         displayName = v.findViewById(R.id.profileUsername);
         displayName.setText(mUser.getDisplayName());
-        try {
-            Log.d(TAG, "displayName:success".concat(mUser.getDisplayName()));
-        } catch (Exception e) {
-            Log.w(TAG, "displayName:failure", e);
-        }
 
         return v;
     }
