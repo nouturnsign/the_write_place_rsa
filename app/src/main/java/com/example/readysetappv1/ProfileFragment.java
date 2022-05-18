@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +30,7 @@ public class ProfileFragment extends Fragment {
     private TextView displayName;
     private TextView email;
     private Button changePassword;
+    private Button signOutButton;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -80,14 +82,22 @@ public class ProfileFragment extends Fragment {
         changePassword = v.findViewById(R.id.profileChangePassword);
         changePassword.setOnClickListener(this::onChangePassword);
 
+        signOutButton = v.findViewById(R.id.signOutButton);
+        signOutButton.setOnClickListener(this::onSignOut);
+
         return v;
     }
 
     private void onChangePassword(View v) {
-
         Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
         startActivity(intent);
+    }
 
+    private void onSignOut(View v) {
+        FirebaseAuth.getInstance().signOut();
+        Toast.makeText(getContext(), "Signed out.", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        startActivity(intent);
     }
 
 }

@@ -58,6 +58,12 @@
     <string name="email_to_send_to">Email to send to:</string>
     <string name="return_to_login">Return to login</string>
     <string name="email_address">Email address</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="points">Points:</string>
+    <string name="tags">Tags:</string>
+    <string name="change_password">Change Password</string>
+    <string name="email">Email:</string>
+    <string name="username">Username:</string>
 
     <!--Tags-->
     <string-array name="subject_array">
