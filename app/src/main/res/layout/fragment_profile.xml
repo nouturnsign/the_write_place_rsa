@@ -43,18 +43,18 @@
             android:textSize="24sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/profileChangeEmail"
+            android:id="@+id/profileChangePassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profileEmail"
-            android:text="Change Email"
+            android:text="Change Password"
             android:textSize="18sp" />
 
         <RelativeLayout
             android:id="@+id/profileTagContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/profileChangeEmail">
+            android:layout_below="@id/profileChangePassword">
 
             <TextView
                 android:id="@+id/profileTag"
