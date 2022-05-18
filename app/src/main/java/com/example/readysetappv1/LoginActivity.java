@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText thePasswordEditText;
     private Button theSignInButton;
     private Button theRegisterButton;
+    private Button forgotPasswordButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +37,20 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         // initialization
         theEmailEditText = findViewById(R.id.username);
+
         theUsernameEditText = findViewById(R.id.username3);
+
         thePasswordEditText = findViewById(R.id.password);
+
         theSignInButton = findViewById(R.id.login);
-        theRegisterButton = findViewById(R.id.login2);
         theSignInButton.setOnClickListener(this::onClickLogin);
+
+        theRegisterButton = findViewById(R.id.login2);
         theRegisterButton.setOnClickListener(this::onClickRegister);
+
+        forgotPasswordButton = findViewById(R.id.newPasswordButton);
+        forgotPasswordButton.setOnClickListener(this::onResetPassword);
+
     }
 
     private void createAccount(String email, String password, String username){
@@ -115,6 +124,13 @@ public class LoginActivity extends AppCompatActivity {
         String username = theUsernameEditText.getText().toString();
         String password = thePasswordEditText.getText().toString();
         verifyCredentials(email, password);
+    }
+
+    private void onResetPassword(View v) {
+
+        Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+        startActivity(intent);
+
     }
 
 }

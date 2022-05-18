@@ -55,6 +55,9 @@
     <string name="choose_a_secure_password">Choose a secure password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="return_to_profile">Return to Profile</string>
+    <string name="email_to_send_to">Email to send to:</string>
+    <string name="return_to_login">Return to login</string>
+    <string name="email_address">Email address</string>
 
     <!--Tags-->
     <string-array name="subject_array">

@@ -10,7 +10,8 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.231" />
         <entry key="app/src/main/res/layout/activity_change_password.xml" value="0.22981996889467593" />
         <entry key="app/src/main/res/layout/activity_feedback.xml" value="0.19964721237403754" />
-        <entry key="app/src/main/res/layout/activity_login_page.xml" value="0.23632507324218754" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.21342592592592594" />
+        <entry key="app/src/main/res/layout/activity_login_page.xml" value="0.24741973876953127" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.33425925925925926" />
         <entry key="app/src/main/res/layout/activity_review.xml" value="0.19519927536231885" />
         <entry key="app/src/main/res/layout/activity_review_scene.xml" value="0.19519927536231885" />
