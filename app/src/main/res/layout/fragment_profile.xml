@@ -20,7 +20,7 @@
             android:src="@drawable/generic_profile_picture" />
 
         <View
-            android:id="@+id/profileDivider"
+            android:id="@+id/profileDividerTop"
             style="@style/divider"
             android:backgroundTint="@color/black"
             android:layout_below="@id/profilePicture"
@@ -30,8 +30,8 @@
             android:id="@+id/profileUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/profileDivider"
-            android:text="Username:"
+            android:layout_below="@+id/profileDividerTop"
+            android:text="@string/username"
             android:textSize="24sp"/>
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profileUsername"
-            android:text="Email:"
+            android:text="@string/email"
             android:textSize="24sp" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profileEmail"
-            android:text="Change Password"
+            android:text="@string/change_password"
             android:textSize="18sp" />
 
         <RelativeLayout
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:text="Tags:"
+                android:text="@string/tags"
                 android:textSize="24sp" />
 
         </RelativeLayout>
@@ -71,8 +71,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/profileTagContainer"
-            android:text="Points:"
+            android:text="@string/points"
             android:textSize="24sp" />
+
+        <View
+            android:id="@+id/profileDividerBottom"
+            style="@style/divider"
+            android:backgroundTint="@color/black"
+            android:layout_below="@id/profilePoints"
+            android:layout_margin="@dimen/margin_small" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/signOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profileDividerBottom"
+            android:text="@string/sign_out"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 

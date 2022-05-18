@@ -20,7 +20,6 @@ public class MenuActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(this::onNavigationItemSelected);
-        // TODO: Set menu to middle slot
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new ProfileFragment())

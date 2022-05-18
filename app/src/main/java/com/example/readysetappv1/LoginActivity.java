@@ -91,8 +91,6 @@ public class LoginActivity extends AppCompatActivity {
     private void onClickRegister(View v) {
         String email = theEmailEditText.getText().toString();
         String username = theUsernameEditText.getText().toString();
-        // TODO: display username inside app (profile page?)
-        // TODO: make sign-out button within profile
         String password = thePasswordEditText.getText().toString();
         createAccount(email, password, username);
     }
