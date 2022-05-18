@@ -25,6 +25,7 @@ public class ProfileFragment extends Fragment {
     final private static String TAG = "Profile Fragment";
     private FirebaseUser mUser;
     private TextView displayName;
+    private TextView email;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -58,7 +59,10 @@ public class ProfileFragment extends Fragment {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         displayName = v.findViewById(R.id.profileUsername);
-        displayName.setText(mUser.getDisplayName());
+        displayName.setText("Username: ".concat(Objects.requireNonNull(mUser.getDisplayName())));
+
+        email = v.findViewById(R.id.profileEmail);
+        email.setText("Email: ".concat(Objects.requireNonNull(mUser.getEmail())));
 
         return v;
     }
