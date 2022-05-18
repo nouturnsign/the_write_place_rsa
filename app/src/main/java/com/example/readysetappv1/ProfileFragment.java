@@ -1,5 +1,6 @@
 package com.example.readysetappv1;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +28,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseUser mUser;
     private TextView displayName;
     private TextView email;
+    private Button changePassword;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -74,6 +77,17 @@ public class ProfileFragment extends Fragment {
             Log.w(TAG, "email:failure", e);
         }
 
+        changePassword = v.findViewById(R.id.profileChangePassword);
+        changePassword.setOnClickListener(this::onChangePassword);
+
         return v;
     }
+
+    private void onChangePassword(View v) {
+
+        Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
+        startActivity(intent);
+
+    }
+
 }

@@ -51,6 +51,10 @@
     <string name="exit_prompt">Would you like to exit and rate the review?</string>
     <string name="exit">Exit</string>
     <string name="profile">Profile</string>
+    <string name="change_password_prompt">New Password:</string>
+    <string name="choose_a_secure_password">Choose a secure password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="return_to_profile">Return to Profile</string>
 
     <!--Tags-->
     <string-array name="subject_array">
