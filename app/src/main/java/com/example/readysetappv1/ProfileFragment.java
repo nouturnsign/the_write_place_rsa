@@ -1,7 +1,6 @@
 package com.example.readysetappv1;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,8 +23,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
@@ -39,7 +36,7 @@ public class ProfileFragment extends Fragment {
     final private static String TAG = "Profile Fragment";
     private FirebaseUser mUser;
     private ImageView profilePicture;
-    private ActivityResultLauncher<Intent> someActivityResultLauncher;
+    private ActivityResultLauncher<Intent> filePicker;
     private TextView displayName;
     private TextView email;
     private Button changePassword;
@@ -78,7 +75,7 @@ public class ProfileFragment extends Fragment {
 
         profilePicture = v.findViewById(R.id.profilePicture);
         profilePicture.setOnClickListener(this::onClickProfilePicture);
-        someActivityResultLauncher = registerForActivityResult(
+        filePicker = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -94,14 +91,15 @@ public class ProfileFragment extends Fragment {
                             } catch (Exception e) {
                                 Log.e(TAG, "uploadPFP:failure", e);
                             }
-
+                        } else {
+                            Log.w(TAG, "uploadPFP:failure");
                         }
                     }
                 });
 
         displayName = v.findViewById(R.id.profileUsername);
         try {
-            displayName.setText("Username: ".concat(Objects.requireNonNull(mUser.getDisplayName())));
+            displayName.setText(getString(R.string.username).concat(" ").concat(Objects.requireNonNull(mUser.getDisplayName())));
             Log.d(TAG, "displayName:success");
         } catch (NullPointerException e) {
             Log.e(TAG, "displayName:failure", e);
@@ -109,7 +107,7 @@ public class ProfileFragment extends Fragment {
 
         email = v.findViewById(R.id.profileEmail);
         try {
-            email.setText("Email: ".concat(Objects.requireNonNull(mUser.getEmail())));
+            email.setText(getString(R.string.email).concat(" ").concat(Objects.requireNonNull(mUser.getEmail())));
             Log.d(TAG, "email:success");
         } catch (NullPointerException e) {
             Log.e(TAG, "email:failure", e);
@@ -125,10 +123,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void onClickProfilePicture(View v) {
-        //Instead of startActivityForResult use this one
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        someActivityResultLauncher.launch(intent);
+        filePicker.launch(intent);
     }
 
     private void onChangePassword(View v) {
