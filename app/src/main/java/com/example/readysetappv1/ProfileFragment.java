@@ -1,8 +1,15 @@
 package com.example.readysetappv1;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -10,12 +17,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 /**
@@ -27,6 +38,8 @@ public class ProfileFragment extends Fragment {
 
     final private static String TAG = "Profile Fragment";
     private FirebaseUser mUser;
+    private ImageView profilePicture;
+    private ActivityResultLauncher<Intent> someActivityResultLauncher;
     private TextView displayName;
     private TextView email;
     private Button changePassword;
@@ -63,12 +76,35 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        profilePicture = v.findViewById(R.id.profilePicture);
+        profilePicture.setOnClickListener(this::onClickProfilePicture);
+        someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // Here, no request code
+                            Intent data = result.getData();
+                            try {
+                                Uri imageUri = data.getData();
+                                InputStream iStream = getContext().getContentResolver().openInputStream(imageUri);
+                                // TODO: save InputStream iStream to storage
+                                Log.d(TAG, "uploadPFP:success");
+                            } catch (Exception e) {
+                                Log.e(TAG, "uploadPFP:failure", e);
+                            }
+
+                        }
+                    }
+                });
+
         displayName = v.findViewById(R.id.profileUsername);
         try {
             displayName.setText("Username: ".concat(Objects.requireNonNull(mUser.getDisplayName())));
             Log.d(TAG, "displayName:success");
         } catch (NullPointerException e) {
-            Log.w(TAG, "displayName:failure", e);
+            Log.e(TAG, "displayName:failure", e);
         }
 
         email = v.findViewById(R.id.profileEmail);
@@ -76,7 +112,7 @@ public class ProfileFragment extends Fragment {
             email.setText("Email: ".concat(Objects.requireNonNull(mUser.getEmail())));
             Log.d(TAG, "email:success");
         } catch (NullPointerException e) {
-            Log.w(TAG, "email:failure", e);
+            Log.e(TAG, "email:failure", e);
         }
 
         changePassword = v.findViewById(R.id.profileChangePassword);
@@ -86,6 +122,13 @@ public class ProfileFragment extends Fragment {
         signOutButton.setOnClickListener(this::onSignOut);
 
         return v;
+    }
+
+    private void onClickProfilePicture(View v) {
+        //Instead of startActivityForResult use this one
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        someActivityResultLauncher.launch(intent);
     }
 
     private void onChangePassword(View v) {
