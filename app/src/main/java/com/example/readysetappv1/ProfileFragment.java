@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -20,8 +21,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.InputStream;
 import java.util.Objects;
@@ -34,6 +40,7 @@ import java.util.Objects;
 public class ProfileFragment extends Fragment {
 
     final private static String TAG = "Profile Fragment";
+    private FirebaseStorage pfps;
     private FirebaseUser mUser;
     private ImageView profilePicture;
     private ActivityResultLauncher<Intent> filePicker;
@@ -45,7 +52,6 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
         // Required empty public constructor
     }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -71,6 +77,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        pfps = FirebaseStorage.getInstance();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         profilePicture = v.findViewById(R.id.profilePicture);
@@ -85,7 +92,8 @@ public class ProfileFragment extends Fragment {
                             Intent data = result.getData();
                             try {
                                 Uri imageUri = data.getData();
-                                InputStream iStream = getContext().getContentResolver().openInputStream(imageUri);
+                                uploadPFPToStorage(imageUri);
+                                // InputStream iStream = getContext().getContentResolver().openInputStream(imageUri);
                                 // TODO: save InputStream iStream to storage
                                 Log.d(TAG, "uploadPFP:success");
                             } catch (Exception e) {
@@ -131,6 +139,28 @@ public class ProfileFragment extends Fragment {
     private void onChangePassword(View v) {
         Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
         startActivity(intent);
+    }
+
+    private void uploadPFPToStorage(Uri uri){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference riversRef = storageRef.child("pfps/"+mUser.getEmail().hashCode()+".jpeg");
+        UploadTask uploadTask = riversRef.putFile(uri);
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Log.d(TAG,"pfp upload failed", exception);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                Log.v(TAG, "pfp upload success");
+            }
+        });
     }
 
     private void onSignOut(View v) {
