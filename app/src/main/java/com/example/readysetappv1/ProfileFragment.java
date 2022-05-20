@@ -21,10 +21,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -79,7 +82,6 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         pfps = FirebaseStorage.getInstance();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-
         profilePicture = v.findViewById(R.id.profilePicture);
         profilePicture.setOnClickListener(this::onClickProfilePicture);
         filePicker = registerForActivityResult(
@@ -93,8 +95,19 @@ public class ProfileFragment extends Fragment {
                             try {
                                 Uri imageUri = data.getData();
                                 uploadPFPToStorage(imageUri);
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setPhotoUri(imageUri).build();
+                                mUser.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d(TAG, "User profile updated.");
+                                                }
+                                            }
+                                        });
+
                                 // InputStream iStream = getContext().getContentResolver().openInputStream(imageUri);
-                                // TODO: save InputStream iStream to storage
                                 Log.d(TAG, "uploadPFP:success");
                             } catch (Exception e) {
                                 Log.e(TAG, "uploadPFP:failure", e);
