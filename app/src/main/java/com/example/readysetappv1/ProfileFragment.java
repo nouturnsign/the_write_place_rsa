@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +36,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.InputStream;
 import java.util.Objects;
+
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,6 +87,10 @@ public class ProfileFragment extends Fragment {
         pfps = FirebaseStorage.getInstance();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         profilePicture = v.findViewById(R.id.profilePicture);
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                .child("pfps/"+mUser.getEmail().hashCode()+".jpeg");
+        Glide.with(this /* context */).load(storageReference).into(profilePicture);
+
         profilePicture.setOnClickListener(this::onClickProfilePicture);
         filePicker = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
