@@ -19,10 +19,15 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -134,6 +139,11 @@ public class UploadFragment extends Fragment {
         Map<String, Object> essay = new HashMap<>();
         essay.put("url", url);
         essay.put("tag",tag);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String username = user.getDisplayName();
+        essay.put("username",username);
+        String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());;
+        essay.put("date",date);
         //TODO: choose workspace, submit docname query
         final String WORKSPACE = "ECG";
         db.collection(WORKSPACE).document(documentName)
