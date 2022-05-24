@@ -55,6 +55,7 @@ public class ProfileFragment extends Fragment {
     private TextView email;
     private Button changePassword;
     private Button signOutButton;
+    private Button changeTag;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -87,11 +88,13 @@ public class ProfileFragment extends Fragment {
         pfps = FirebaseStorage.getInstance();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         profilePicture = v.findViewById(R.id.profilePicture);
+        changeTag = v.findViewById(R.id.profileTag);
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child("pfps/"+mUser.getEmail().hashCode()+".jpeg");
         Glide.with(this /* context */).load(storageReference).into(profilePicture);
 
         profilePicture.setOnClickListener(this::onClickProfilePicture);
+        changeTag.setOnClickListener(this::onClickChangeTags);
         filePicker = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -145,6 +148,8 @@ public class ProfileFragment extends Fragment {
         changePassword = v.findViewById(R.id.profileChangePassword);
         changePassword.setOnClickListener(this::onChangePassword);
 
+
+
         signOutButton = v.findViewById(R.id.signOutButton);
         signOutButton.setOnClickListener(this::onSignOut);
 
@@ -182,6 +187,12 @@ public class ProfileFragment extends Fragment {
                 Log.v(TAG, "pfp upload success");
             }
         });
+    }
+
+
+    private void onClickChangeTags(View v){
+        Intent intent = new Intent(getContext(), ChangeTagsActivity.class);
+        startActivity(intent);
     }
 
     private void onSignOut(View v) {

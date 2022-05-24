@@ -56,13 +56,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/profileChangePassword">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/profileTag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:text="@string/tags"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
         </RelativeLayout>
 
