@@ -125,13 +125,15 @@ public class UploadFragment extends Fragment {
     private void onClickSubmit(View v) {
         String documentName = documentName_text.getText().toString();
         String url = link_text.getText().toString();
-        createDocument(url, documentName);
+        Object tag = spinner1.getSelectedItem().toString();
+        createDocument(url, documentName, tag);
     }
 
-    private void createDocument(String url, String documentName) {
+    private void createDocument(String url, String documentName, Object tag) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> essay = new HashMap<>();
         essay.put("url", url);
+        essay.put("tag",tag);
         //TODO: choose workspace, submit docname query
         final String WORKSPACE = "ECG";
         db.collection(WORKSPACE).document(documentName)
