@@ -42,13 +42,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         HashMap<String, String> review = mData.get(position);
         String reviewerUsername = review.get("reviewerUsername");
-        String point = review.get("point");
         String date = review.get("date");
         String essayTitle = review.get("essayTitle");
         String profilePicture = review.get("profilePicture");
         String tagPicture = review.get("tagPicture");
         holder.reviewerUsernameView.setText(reviewerUsername);
-        holder.pointView.setText(point);
         holder.dateView.setText(date);
         holder.essayTitleView.setText(essayTitle);
         // kind of redundant to cast to String and back
@@ -68,7 +66,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView reviewerUsernameView;
-        TextView pointView;
         TextView dateView;
         TextView essayTitleView;
         ShapeableImageView profilePictureView;
@@ -77,7 +74,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         ViewHolder(View itemView) {
             super(itemView);
             reviewerUsernameView = itemView.findViewById(R.id.profileUsername);
-            pointView = itemView.findViewById(R.id.point);
             dateView = itemView.findViewById(R.id.profileDate);
             essayTitleView = itemView.findViewById(R.id.essayTitle);
             profilePictureView = itemView.findViewById(R.id.profilePicture);
