@@ -85,7 +85,6 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
         // ideally something like ArrayList<User>
 
         String[] submitterUsername = new String[] {"Jason Yin", "Eric Wang", "Roshan Sundaram", "Anika Suman", "Michael Scutari", "Giggy", "John Doe"};
-        int[] point = new int[] {46, 47, 45, 48, 50, 20, 39};
         int[] day = new int[] {28, 23, 22, 19, 17, 15, 12};
         String[] essayTitle = new String[] {"The Monumental Importance of Monuments", "On Lagrange Multipliers", "Industrial Revolution DBQ", "Rédaction 1", "PHYS 122 Lab #8", "The Great Pacific Garbage Patch", "Titration of Acetic Acid with Sodium Hydroxide"};
         int[] profilePicture = new int[] {R.drawable.jason_square, R.drawable.eric_square, R.drawable.roshan_square, R.drawable.anika_square, R.drawable.michael_square, R.drawable.giggy_square, R.drawable.generic_profile_picture};
@@ -94,7 +93,6 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
         for (int i=0; i<7; i++) {
             HashMap<String, String> review = new HashMap<>();
             review.put("reviewerUsername", submitterUsername[i]);
-            review.put("point", String.valueOf(point[i]));
             review.put("date", "02/" + day[i] + "/2022");
             review.put("essayTitle", essayTitle[i]);
             review.put("profilePicture", String.valueOf(profilePicture[i]));

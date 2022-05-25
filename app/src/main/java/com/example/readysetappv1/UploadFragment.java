@@ -142,7 +142,7 @@ public class UploadFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String username = user.getDisplayName();
         essay.put("username",username);
-        String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());;
+        String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());;
         essay.put("date",date);
         //TODO: choose workspace, submit docname query
         final String WORKSPACE = "ECG";
