@@ -3,17 +3,30 @@ package com.example.readysetappv1;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +40,7 @@ public class FeedbackListFragment extends Fragment implements MyRecyclerViewAdap
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "workspace_index";
-
+    private static final String TAG = "getDataFromDatabase";
     // TODO: Rename and change types of parameters
     private int mWorkspaceIndex;
 
@@ -79,7 +92,6 @@ public class FeedbackListFragment extends Fragment implements MyRecyclerViewAdap
     }
 
     private ArrayList<HashMap<String, String>> generateFakeEssayTitles() {
-
         // data to populate the RecyclerView with
         ArrayList<HashMap<String, String>> essayTitles = new ArrayList<>();
         // ideally something like ArrayList<User>

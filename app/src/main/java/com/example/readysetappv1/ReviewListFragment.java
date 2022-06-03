@@ -12,8 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Query;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,7 +80,7 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
 
         // Fake data
         // TODO: replace with real user stuff
-        ArrayList<HashMap<String, String>> essayTitles = generateFakeEssayTitles();
+        ArrayList<HashMap<String, String>> essayTitles = generateDatabaseEssayTitles();
 
         // set up the RecyclerView
         RecyclerView recyclerView = v.findViewById(R.id.myRecyclerView);
@@ -78,29 +91,45 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
         return v;
     }
 
-    private ArrayList<HashMap<String, String>> generateFakeEssayTitles() {
+    private ArrayList<HashMap<String, String>> generateDatabaseEssayTitles() {
 
         // data to populate the RecyclerView with
-        ArrayList<HashMap<String, String>> essayTitles = new ArrayList<>();
+        ArrayList<HashMap<String, String>> databaseEssays = new ArrayList<>();
         // ideally something like ArrayList<User>
 
-        String[] submitterUsername = new String[] {"Jason Yin", "Eric Wang", "Roshan Sundaram", "Anika Suman", "Michael Scutari", "Giggy", "John Doe"};
-        int[] day = new int[] {28, 23, 22, 19, 17, 15, 12};
-        String[] essayTitle = new String[] {"The Monumental Importance of Monuments", "On Lagrange Multipliers", "Industrial Revolution DBQ", "Rédaction 1", "PHYS 122 Lab #8", "The Great Pacific Garbage Patch", "Titration of Acetic Acid with Sodium Hydroxide"};
-        int[] profilePicture = new int[] {R.drawable.jason_square, R.drawable.eric_square, R.drawable.roshan_square, R.drawable.anika_square, R.drawable.michael_square, R.drawable.giggy_square, R.drawable.generic_profile_picture};
-        int[] tagPicture = new int[] {R.drawable.engtag, R.drawable.mathtag, R.drawable.histtag, R.drawable.frenchtag, R.drawable.phystag, R.drawable.sciencetag, R.drawable.chemtag};
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // asynchronously retrieve multiple documents
+        Query tagQuery = db.collection("ECG").whereEqualTo("tag", "eng");
+        QuerySnapshot tagQuerySnapshot = tagQuery.get().getResult();
+        List<String> submitterUsername = new ArrayList<>();
+        List<String> date = new ArrayList<>();
+        List<String> essayTitle = new ArrayList<>();
+        List<String> url = new ArrayList<>();
+        List<String> tag = new ArrayList<>();
+        for (DocumentSnapshot document : tagQuerySnapshot.getDocuments()) {
+            submitterUsername.add(document.get("username").toString());
+            date.add(document.get("date").toString());
+            essayTitle.add(document.getId());
+            url.add(document.get("url").toString());
+            tag.add(document.get("tag").toString());
+
+        }
+        //todo: tags and profile pictures
+        //int[] profilePicture = new int[] {R.drawable.jason_square, R.drawable.eric_square, R.drawable.roshan_square, R.drawable.anika_square, R.drawable.michael_square, R.drawable.giggy_square, R.drawable.generic_profile_picture};
+        //int[] tagPicture = new int[] {R.drawable.engtag, R.drawable.mathtag, R.drawable.histtag, R.drawable.frenchtag, R.drawable.phystag, R.drawable.sciencetag, R.drawable.chemtag};
 
         for (int i=0; i<7; i++) {
             HashMap<String, String> review = new HashMap<>();
-            review.put("reviewerUsername", submitterUsername[i]);
-            review.put("date", "02/" + day[i] + "/2022");
-            review.put("essayTitle", essayTitle[i]);
-            review.put("profilePicture", String.valueOf(profilePicture[i]));
-            review.put("tagPicture", String.valueOf(tagPicture[i]));
-            essayTitles.add(review);
+            review.put("username", submitterUsername.get(i));//todo: possible confuzzlement
+            review.put("date",date.get(i));
+            review.put("essayTitle", essayTitle.get(i));
+            review.put("url",url.get(i));
+            //review.put("profilePicture", String.valueOf(profilePicture[i]));
+            //review.put("tagPicture", String.valueOf(tagPicture[i]));
+            databaseEssays.add(review);
         }
 
-        return essayTitles;
+        return databaseEssays;
     }
 
     @Override
