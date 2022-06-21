@@ -3,29 +3,34 @@ package com.example.readysetappv1;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.google.android.gms.common.api.Result;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.firestore.CollectionReference;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 
 /**
@@ -35,14 +40,15 @@ import java.util.List;
  */
 public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapter.ItemClickListener {
 
+    public static final String TAG = "ReviewListFragment";
     MyRecyclerViewAdapter adapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "workspace_index";
+    private static final String ARG_PARAM1 = "databaseEssays";
 
     // TODO: Rename and change types of parameters
-    private int mWorkspaceIndex;
+    private ArrayList<HashMap<String, String>> mDatabaseEssays;
 
     public ReviewListFragment() {
         // Required empty public constructor
@@ -52,14 +58,19 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param workspace_index Index of workspace (0, 1).
+     * @param databaseEssays List of maps that represents essays fetched from the database.
      * @return A new instance of fragment FeedbackListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FeedbackListFragment newInstance(int workspace_index) {
+    public static FeedbackListFragment newInstance(@NonNull ArrayList<HashMap<String, String>> databaseEssays) {
         FeedbackListFragment fragment = new FeedbackListFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, workspace_index);
+
+        ArrayList<ParcelableEssay> parcelableEssayList = new ArrayList<>();
+        for (int i=0; i<databaseEssays.size(); i++) {
+            parcelableEssayList.set(i, new ParcelableEssay(databaseEssays.get(i)));
+        }
+        args.putParcelableArrayList(ARG_PARAM1, parcelableEssayList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,7 +79,11 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mWorkspaceIndex = getArguments().getInt(ARG_PARAM1);
+            ArrayList<ParcelableEssay> parcelableEssayArrayList = getArguments().getParcelableArrayList(ARG_PARAM1);
+            mDatabaseEssays = new ArrayList<>();
+            for (ParcelableEssay essay : parcelableEssayArrayList) {
+                mDatabaseEssays.add(essay.toHashMap());
+            }
         }
     }
 
@@ -80,12 +95,19 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
 
         // Fake data
         // TODO: replace with real user stuff
-        ArrayList<HashMap<String, String>> essayTitles = generateDatabaseEssayTitles();
+        try {
+            mDatabaseEssays = generateDatabaseEssayTitles();
+            Log.i(TAG, "success");
+        } catch (Exception e) {
+            Log.e(TAG, "failure", e);
+        } finally {
+            Log.v(TAG, "attempted");
+        }
 
         // set up the RecyclerView
         RecyclerView recyclerView = v.findViewById(R.id.myRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyRecyclerViewAdapter(getContext(), essayTitles);
+        adapter = new MyRecyclerViewAdapter(getContext(), mDatabaseEssays);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         return v;
@@ -93,32 +115,50 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
 
     private ArrayList<HashMap<String, String>> generateDatabaseEssayTitles() {
 
-        // data to populate the RecyclerView with
-        ArrayList<HashMap<String, String>> databaseEssays = new ArrayList<>();
-        // ideally something like ArrayList<User>
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // asynchronously retrieve multiple documents
         Query tagQuery = db.collection("ECG").whereEqualTo("tag", "eng");
-        QuerySnapshot tagQuerySnapshot = tagQuery.get().getResult();
+        Task<QuerySnapshot> tagQueryTask = tagQuery.get();
+
+        tagQueryTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                }
+            }
+        });
+
+        ArrayList<HashMap<String, String>> databaseEssays = new ArrayList<>();
+        RunnableTask runnable = new RunnableTask(tagQueryTask);
+        Thread thread = new Thread(runnable);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        QuerySnapshot tagQuerySnapshot = runnable.getValue();
+
         List<String> submitterUsername = new ArrayList<>();
         List<String> date = new ArrayList<>();
         List<String> essayTitle = new ArrayList<>();
         List<String> url = new ArrayList<>();
         List<String> tag = new ArrayList<>();
+        int numQueries = 0;
         for (DocumentSnapshot document : tagQuerySnapshot.getDocuments()) {
             submitterUsername.add(document.get("username").toString());
             date.add(document.get("date").toString());
             essayTitle.add(document.getId());
             url.add(document.get("url").toString());
             tag.add(document.get("tag").toString());
-
+            numQueries++;
         }
         //todo: tags and profile pictures
         //int[] profilePicture = new int[] {R.drawable.jason_square, R.drawable.eric_square, R.drawable.roshan_square, R.drawable.anika_square, R.drawable.michael_square, R.drawable.giggy_square, R.drawable.generic_profile_picture};
         //int[] tagPicture = new int[] {R.drawable.engtag, R.drawable.mathtag, R.drawable.histtag, R.drawable.frenchtag, R.drawable.phystag, R.drawable.sciencetag, R.drawable.chemtag};
 
-        for (int i=0; i<7; i++) {
+        for (int i=0; i<numQueries; i++) {
             HashMap<String, String> review = new HashMap<>();
             review.put("username", submitterUsername.get(i));//todo: possible confuzzlement
             review.put("date",date.get(i));
@@ -130,6 +170,7 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
         }
 
         return databaseEssays;
+
     }
 
     @Override

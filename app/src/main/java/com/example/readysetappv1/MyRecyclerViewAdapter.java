@@ -1,6 +1,7 @@
 package com.example.readysetappv1;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.List;
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
     // dunno if these first two should be final
+    public final static String TAG = "ADAPTER";
     private final List<HashMap<String, String>> mData;
     private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -41,31 +43,45 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         HashMap<String, String> review = mData.get(position);
-        String reviewerUsername = review.get("reviewerUsername");
+        /*
+            submitterUsername.add(document.get("username").toString());
+            date.add(document.get("date").toString());
+            essayTitle.add(document.getId());
+            url.add(document.get("url").toString());
+            tag.add(document.get("tag").toString());
+        */
+        String username = review.get("username");
         String date = review.get("date");
         String essayTitle = review.get("essayTitle");
-        String profilePicture = review.get("profilePicture");
-        String tagPicture = review.get("tagPicture");
-        holder.reviewerUsernameView.setText(reviewerUsername);
+        // Log.v(TAG, username + " " + date + " " + essayTitle);
+        // String profilePicture = review.get("profilePicture");
+        // String tagPicture = review.get("tagPicture");
+        holder.usernameView.setText(username);
         holder.dateView.setText(date);
         holder.essayTitleView.setText(essayTitle);
         // kind of redundant to cast to String and back
-        if (profilePicture == null) profilePicture = String.valueOf(R.drawable.generic_profile_picture);
-        holder.profilePictureView.setImageResource(Integer.parseInt(profilePicture));
-        if (tagPicture == null) tagPicture = String.valueOf(R.drawable.engtag);
-        holder.tagPictureView.setImageResource(Integer.parseInt(tagPicture));
+//        if (profilePicture == null) profilePicture = String.valueOf(R.drawable.generic_profile_picture);
+//        holder.profilePictureView.setImageResource(Integer.parseInt(profilePicture));
+//        if (tagPicture == null) tagPicture = String.valueOf(R.drawable.engtag);
+//        holder.tagPictureView.setImageResource(Integer.parseInt(tagPicture));
     }
 
     // total number of rows
     @Override
     public int getItemCount() {
-        return mData.size();
+        try {
+            Log.v(TAG, "Successfully invoked getItemCount.");
+            return mData.size();
+        } catch (NullPointerException e) {
+            Log.w(TAG, "Failed to invoke getItemCount.");
+            return 0;
+        }
     }
 
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView reviewerUsernameView;
+        TextView usernameView;
         TextView dateView;
         TextView essayTitleView;
         ShapeableImageView profilePictureView;
@@ -73,7 +89,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
         ViewHolder(View itemView) {
             super(itemView);
-            reviewerUsernameView = itemView.findViewById(R.id.profileUsername);
+            usernameView = itemView.findViewById(R.id.profileUsername);
             dateView = itemView.findViewById(R.id.profileDate);
             essayTitleView = itemView.findViewById(R.id.essayTitle);
             profilePictureView = itemView.findViewById(R.id.profilePicture);
