@@ -177,6 +177,7 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
     public void onItemClick(View view, int position) {
         // TODO: Make this actually do something
         Intent intent = new Intent(getActivity(), ReviewActivity.class);
+        intent.putExtra("url",mDatabaseEssays.get(position).get("url"));
         startActivity(intent);
     }
 }
