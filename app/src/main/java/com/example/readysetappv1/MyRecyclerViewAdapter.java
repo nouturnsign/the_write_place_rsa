@@ -50,7 +50,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             url.add(document.get("url").toString());
             tag.add(document.get("tag").toString());
         */
-        String username = review.get("username");
+        String username;
+        if (review.containsKey("submitter")) {
+            username = review.get("submitter");
+        } else {
+            username = review.get("reviewer");
+        }
         String date = review.get("date");
         String essayTitle = review.get("essayTitle");
         // Log.v(TAG, username + " " + date + " " + essayTitle);

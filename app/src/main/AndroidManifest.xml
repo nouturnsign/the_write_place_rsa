@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ReadySetAppV1">
         <activity
+            android:name=".OtherEssaysActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
@@ -49,18 +52,22 @@
         <activity
             android:name=".ReviewActivity"
             android:exported="true"
-            android:label="Review Activity" >
+            android:label="Review Activity">
             <intent-filter>
-                <!--action android:name="android.intent.action.MAIN" /-->
+
+                <!-- action android:name="android.intent.action.MAIN" / -->
                 <action android:name="android.intent.action.VIEW" />
-                <!-- Include the host attribute if you want your app to respond
-                     only to URLs with your app's domain. -->
+                <!--
+                     Include the host attribute if you want your app to respond
+                     only to URLs with your app's domain.
+                -->
                 <data android:scheme="https" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <!-- The BROWSABLE category is required to get links from web pages. -->
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
         <activity

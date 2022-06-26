@@ -1,100 +1,40 @@
 package com.example.readysetappv1;
 
-import android.content.Intent;
-import android.os.Bundle;
-
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.google.android.gms.common.api.Result;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
+public class OtherEssaysActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ReviewListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapter.ItemClickListener {
+    public static final String TAG = "OtherEssaysActivity";
 
-    public static final String TAG = "ReviewListFragment";
-    MyRecyclerViewAdapter adapter;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "databaseEssays";
-
-    // TODO: Rename and change types of parameters
     private ArrayList<HashMap<String, String>> mDatabaseEssays;
 
-    public ReviewListFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param databaseEssays List of maps that represents essays fetched from the database.
-     * @return A new instance of fragment FeedbackListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FeedbackListFragment newInstance(@NonNull ArrayList<HashMap<String, String>> databaseEssays) {
-        FeedbackListFragment fragment = new FeedbackListFragment();
-        Bundle args = new Bundle();
-
-        ArrayList<ParcelableEssay> parcelableEssayList = new ArrayList<>();
-        for (int i=0; i<databaseEssays.size(); i++) {
-            parcelableEssayList.set(i, new ParcelableEssay(databaseEssays.get(i)));
-        }
-        args.putParcelableArrayList(ARG_PARAM1, parcelableEssayList);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            ArrayList<ParcelableEssay> parcelableEssayArrayList = getArguments().getParcelableArrayList(ARG_PARAM1);
-            mDatabaseEssays = new ArrayList<>();
-            for (ParcelableEssay essay : parcelableEssayArrayList) {
-                mDatabaseEssays.add(essay.toHashMap());
-            }
-        }
-    }
+        setContentView(R.layout.activity_other_essays);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.myRecyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_feedback_list, container, false);
-
-        // Fake data
-        // TODO: replace with real user stuff
         try {
             mDatabaseEssays = generateDatabaseEssayTitles();
             Log.i(TAG, "success");
@@ -104,20 +44,21 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
             Log.v(TAG, "attempted");
         }
 
-        // set up the RecyclerView
-        RecyclerView recyclerView = v.findViewById(R.id.myRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyRecyclerViewAdapter(getContext(), mDatabaseEssays);
+        MyRecyclerViewAdapter adapter = new MyRecyclerViewAdapter(this, mDatabaseEssays);
         adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
-        return v;
+        mRecyclerView.setAdapter(adapter);
     }
 
     private ArrayList<HashMap<String, String>> generateDatabaseEssayTitles() {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // asynchronously retrieve multiple documents
-        Query tagQuery = db.collection("ECG").whereEqualTo("tag", "eng");
+        Log.v(TAG, FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        Query tagQuery = db
+                .collection("ECG")
+                .whereEqualTo("reviewer", null)
+                .whereNotEqualTo("submitter", "user")
+                ;
         Task<QuerySnapshot> tagQueryTask = tagQuery.get();
 
         tagQueryTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -170,14 +111,10 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
         }
 
         return databaseEssays;
-
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        // TODO: Make this actually do something
-        Intent intent = new Intent(getActivity(), ReviewActivity.class);
-        intent.putExtra("url",mDatabaseEssays.get(position).get("url"));
-        startActivity(intent);
+        // firebase stuff
     }
 }
