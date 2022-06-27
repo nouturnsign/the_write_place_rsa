@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class ChangePasswordActivity extends AppCompatActivity {
 
     final public static String TAG = "ChangePassword";
+
     private Button returnToProfile;
     private EditText password1;
     private EditText password2;

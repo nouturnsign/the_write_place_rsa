@@ -17,8 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
-
     private static final String TAG = "ForgotPassword";
+
     private EditText emailToSendTo;
     private Button submitButton;
 

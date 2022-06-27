@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 public class FeedbackActivity extends AppCompatActivity {
 
+    private static final String TAG = "Feedback";
+
     private TextView commentBox;
     private WebView webView;
     private Button submitButton;

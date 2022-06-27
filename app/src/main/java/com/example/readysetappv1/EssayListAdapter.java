@@ -17,16 +17,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
+public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.ViewHolder> {
 
-    // dunno if these first two should be final
-    public final static String TAG = "ADAPTER";
+    private static final String TAG = "EssayListAdapter";
+
     private final List<HashMap<String, String>> mData;
     private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(Context context, ArrayList<HashMap<String, String>> data) {
+    EssayListAdapter(Context context, ArrayList<HashMap<String, String>> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }

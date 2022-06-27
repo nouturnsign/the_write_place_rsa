@@ -37,7 +37,8 @@ import java.util.Map;
  */
 public class UploadFragment extends Fragment {
 
-    private static final String TAG = "upload";
+    private static final String TAG = "Upload";
+
     private EditText documentName_text;
     private EditText link_text;
     private Button submit_button;

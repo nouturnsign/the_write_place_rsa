@@ -2,7 +2,6 @@ package com.example.readysetappv1;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,9 +23,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class OtherEssaysActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
+public class OtherEssaysActivity extends AppCompatActivity implements EssayListAdapter.ItemClickListener {
 
-    public static final String TAG = "OtherEssaysActivity";
+    private static final String TAG = "OtherEssaysActivity";
+
     private FirebaseUser mUser;
     private ArrayList<HashMap<String, String>> mDatabaseEssays;
 
@@ -47,7 +47,7 @@ public class OtherEssaysActivity extends AppCompatActivity implements MyRecycler
             Log.v(TAG, "attempted");
         }
 
-        MyRecyclerViewAdapter adapter = new MyRecyclerViewAdapter(this, mDatabaseEssays);
+        EssayListAdapter adapter = new EssayListAdapter(this, mDatabaseEssays);
         adapter.setClickListener(this);
         mRecyclerView.setAdapter(adapter);
     }

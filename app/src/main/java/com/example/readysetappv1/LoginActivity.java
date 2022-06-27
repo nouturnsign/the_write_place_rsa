@@ -20,7 +20,9 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 
 
 public class LoginActivity extends AppCompatActivity {
-    final private static String TAG = "Login";
+
+    private static final String TAG = "Login";
+
     private FirebaseAuth mAuth;
     // declaration; objects in xml
     private EditText theEmailEditText;

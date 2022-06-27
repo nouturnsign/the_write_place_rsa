@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class ReviewActivity extends AppCompatActivity {
 
     private static final String TAG = "Review";
+
     private Button openInDocs;
     private Button cosmetic;
     @Override

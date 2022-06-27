@@ -12,6 +12,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class WorkspaceActivity extends AppCompatActivity {
 
+    private static final String TAG = "Workspace";
+
     // declaration; objects from xml
     private Button theButton1;
     private Button theButton2;

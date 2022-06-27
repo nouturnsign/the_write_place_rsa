@@ -8,6 +8,9 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ChangeTagsActivity extends AppCompatActivity {
+
+    private static final String TAG = "ChangeTags";
+
     private Button tagMath;
     private Button tagEnglish;
     private Button tagSocial;

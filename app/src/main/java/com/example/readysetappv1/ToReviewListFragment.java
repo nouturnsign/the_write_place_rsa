@@ -8,18 +8,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.android.gms.common.api.Result;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,21 +26,18 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ReviewListFragment#newInstance} factory method to
+ * Use the {@link ToReviewListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapter.ItemClickListener {
+public class ToReviewListFragment extends Fragment implements EssayListAdapter.ItemClickListener {
 
-    public static final String TAG = "ReviewListFragment";
-    MyRecyclerViewAdapter adapter;
+    private static final String TAG = "ToReviewList";
+
+    EssayListAdapter adapter;
     private FirebaseUser mUser;
     private Button otherEssaysButton;
     // TODO: Rename parameter arguments, choose names that match
@@ -54,7 +47,7 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
     // TODO: Rename and change types of parameters
     private ArrayList<HashMap<String, String>> mDatabaseEssays;
 
-    public ReviewListFragment() {
+    public ToReviewListFragment() {
         // Required empty public constructor
     }
 
@@ -95,7 +88,7 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_review_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_to_review_list, container, false);
         // Fake data
         // TODO: replace with real user stuff
         try {
@@ -112,7 +105,7 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
         // set up the RecyclerView
         RecyclerView recyclerView = v.findViewById(R.id.myRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyRecyclerViewAdapter(getContext(), mDatabaseEssays);
+        adapter = new EssayListAdapter(getContext(), mDatabaseEssays);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         return v;

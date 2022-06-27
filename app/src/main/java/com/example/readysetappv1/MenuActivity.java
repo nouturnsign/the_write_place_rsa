@@ -11,6 +11,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MenuActivity extends AppCompatActivity {
 
+    private static final String TAG = "Menu";
+
     private BottomNavigationView bottomNavigationView;
 
     @Override
@@ -36,7 +38,7 @@ public class MenuActivity extends AppCompatActivity {
                 selectedFragment = new ProfileFragment();
                 break;
             case R.id.review:
-                selectedFragment = new ReviewListFragment();
+                selectedFragment = new ToReviewListFragment();
                 break;
             case R.id.upload:
                 selectedFragment = new UploadFragment();

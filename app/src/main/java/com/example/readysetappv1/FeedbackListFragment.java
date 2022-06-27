@@ -3,44 +3,32 @@ package com.example.readysetappv1;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FeedbackListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FeedbackListFragment extends Fragment implements MyRecyclerViewAdapter.ItemClickListener {
+public class FeedbackListFragment extends Fragment implements EssayListAdapter.ItemClickListener {
 
-    MyRecyclerViewAdapter adapter;
+    private static final String TAG = "FeedbackList";
+
+    EssayListAdapter adapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "workspace_index";
-    private static final String TAG = "getDataFromDatabase";
+
     // TODO: Rename and change types of parameters
     private int mWorkspaceIndex;
 
@@ -85,7 +73,7 @@ public class FeedbackListFragment extends Fragment implements MyRecyclerViewAdap
         // set up the RecyclerView
         RecyclerView recyclerView = v.findViewById(R.id.myRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyRecyclerViewAdapter(getContext(), essayTitles);
+        adapter = new EssayListAdapter(getContext(), essayTitles);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         return v;

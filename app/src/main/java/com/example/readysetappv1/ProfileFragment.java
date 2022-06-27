@@ -46,7 +46,8 @@ import java.util.Objects;
  */
 public class ProfileFragment extends Fragment {
 
-    final private static String TAG = "Profile Fragment";
+    private static final String TAG = "Profile";
+
     private FirebaseStorage pfps;
     private FirebaseUser mUser;
     private ImageView profilePicture;
