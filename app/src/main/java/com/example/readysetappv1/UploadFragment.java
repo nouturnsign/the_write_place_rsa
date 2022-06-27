@@ -3,6 +3,7 @@ package com.example.readysetappv1;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -141,9 +142,11 @@ public class UploadFragment extends Fragment {
         essay.put("tag",tag);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String username = user.getDisplayName();
-        essay.put("username",username);
+        essay.put("submitter",username);
         String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());;
         essay.put("date",date);
+        essay.put("reviewer", null); //when this becomes not null then it will no longer be in the otheressays tab
+        essay.put("completed",false); //when this becomes true a checkmark will appear
         //TODO: choose workspace, submit docname query
         final String WORKSPACE = "ECG";
         db.collection(WORKSPACE).document(documentName)

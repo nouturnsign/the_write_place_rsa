@@ -1,103 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    app:layoutDescription="@xml/activity_view_scene"
-    tools:context=".ReviewActivity">
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".WorkspaceActivity"
+    android:orientation="vertical">
 
-    <!--We do a bit of trolling-->
-    <ImageView
-        android:id="@+id/bottomNavigationView"
-        android:src="@drawable/swipe_bar"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_gravity="bottom"
-        android:alpha="0"
-        android:background="@color/green"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--TODO: Write general button style-->
+    <!--TODO: Just make it less scuffed-->
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-
-        android:id="@+id/main_container"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/commentSwipe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@color/green"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="@string/comments"
-        android:textColor="@color/white"
-        app:autoSizeMaxTextSize="20dp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@id/main_container"
-        app:layout_constraintStart_toStartOf="@id/main_container"
-        app:layout_constraintTop_toTopOf="@id/main_container"
-        app:srcCompat="@drawable/swipe_bar"
-        tools:ignore="TextContrastCheck" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/submitButton"
-        android:background="@color/lightBlue"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="@string/submit_prompt"
-        android:textColor="@color/white"
-        app:autoSizeMaxTextSize="20dp"
-        app:autoSizeTextType="uniform"
-        tools:ignore="TextContrastCheck,TouchTargetSizeCheck"
-        tools:layout_editor_absoluteX="155dp"
-        tools:layout_editor_absoluteY="361dp" />
-
-    <WebView
-        android:id="@+id/documentView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/commentSwipe"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/commentBox"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:alpha="1"
-        android:background="@color/white"
-        android:hint="@string/comments_from_reviewer"
-        android:importantForAutofill="no"
-
-        android:inputType="textMultiLine"
-        android:padding="20dp"
+    <Button
+        android:id="@+id/Open"
+        android:layout_width="@dimen/SBSL"
+        android:layout_height="@dimen/SBSL"
+        android:text="Open in Docs"
         android:textColor="@color/black"
-        android:textColorHint="@color/grayHint"
-        android:textSize="18sp"
-
+        app:backgroundTint="@color/gray2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.024"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TouchTargetSizeCheck" />
+        app:layout_constraintVertical_bias="0.127" />
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+    <Button
+        android:id="@+id/Cosmetic"
+        android:layout_width="@dimen/SBSL"
+        android:layout_height="@dimen/SBSL"
+        android:layout_marginStart="45dp"
+        android:text="Cosmetic"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.129" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

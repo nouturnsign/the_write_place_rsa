@@ -14,11 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.common.api.Result;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -42,7 +45,8 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
 
     public static final String TAG = "ReviewListFragment";
     MyRecyclerViewAdapter adapter;
-
+    private FirebaseUser mUser;
+    private Button otherEssaysButton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "databaseEssays";
@@ -91,8 +95,7 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_feedback_list, container, false);
-
+        View v = inflater.inflate(R.layout.fragment_review_list, container, false);
         // Fake data
         // TODO: replace with real user stuff
         try {
@@ -103,7 +106,9 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
         } finally {
             Log.v(TAG, "attempted");
         }
-
+        otherEssaysButton = v.findViewById(R.id.otherEssaysButton);
+        Log.v(TAG,otherEssaysButton.getText().toString());
+        otherEssaysButton.setOnClickListener(this::onClickOtherEssays);
         // set up the RecyclerView
         RecyclerView recyclerView = v.findViewById(R.id.myRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -114,10 +119,13 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
     }
 
     private ArrayList<HashMap<String, String>> generateDatabaseEssayTitles() {
-
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // asynchronously retrieve multiple documents
-        Query tagQuery = db.collection("ECG").whereEqualTo("tag", "eng");
+        Log.v(TAG, "user"+mUser.getDisplayName());
+        Query tagQuery = db.collection("ECG")
+                .whereEqualTo("tag", "eng")
+                .whereEqualTo("reviewer",mUser.getDisplayName());
         Task<QuerySnapshot> tagQueryTask = tagQuery.get();
 
         tagQueryTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -178,6 +186,11 @@ public class ReviewListFragment extends Fragment implements MyRecyclerViewAdapte
         // TODO: Make this actually do something
         Intent intent = new Intent(getActivity(), ReviewActivity.class);
         intent.putExtra("url",mDatabaseEssays.get(position).get("url"));
+        startActivity(intent);
+    }
+
+    public void onClickOtherEssays(View view){
+        Intent intent = new Intent(getActivity(), OtherEssaysActivity.class);
         startActivity(intent);
     }
 }
