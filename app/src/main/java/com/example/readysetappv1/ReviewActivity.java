@@ -36,8 +36,8 @@ public class ReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
         openInDocs = findViewById(R.id.Open);
-        cosmetic = findViewById(R.id.Cosmetic); //cosmetic = confirm
         openInDocs.setOnClickListener(this::onClickOpen);
+        cosmetic = findViewById(R.id.Cosmetic); //cosmetic = confirm
         cosmetic.setOnClickListener(this::onClickCosmetic);
 
     }
@@ -83,8 +83,17 @@ public class ReviewActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Toast.makeText(ReviewActivity.this, "Come back when you finish reviewing!", Toast.LENGTH_LONG).show();
+                    dialogInterface.cancel();
                 }
             });
-            alert.create().show();
+            AlertDialog dialog = alert.create();
+        dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            }
+        });
+        dialog.show();
     }
 }
