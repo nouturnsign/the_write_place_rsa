@@ -20,32 +20,29 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private static final String TAG = "ForgotPassword";
 
     private EditText emailToSendTo;
-    private Button submitButton;
+    private Button submitEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        emailToSendTo = findViewById(R.id.emailToSendTo);
-        submitButton = findViewById(R.id.submitEmail);
-        submitButton.setOnClickListener(this::onSubmitEmail);
+        emailToSendTo = findViewById(R.id.edit_email_to_send_to);
+        submitEmail = findViewById(R.id.button_submit_email);
+        submitEmail.setOnClickListener(this::onSubmitEmail);
 
     }
 
     private void sendForgotPasswordEmail(String emailAddress) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.sendPasswordResetEmail(emailAddress)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "Email sent.");
-                            Toast.makeText(ForgotPasswordActivity.this, "Email sent.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.w(TAG, "Email failed to send.", task.getException());
-                            Toast.makeText(ForgotPasswordActivity.this, "Invalid email.", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Email sent.");
+                        Toast.makeText(ForgotPasswordActivity.this, "Email sent.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.w(TAG, "Email failed to send.", task.getException());
+                        Toast.makeText(ForgotPasswordActivity.this, "Invalid email.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
