@@ -65,9 +65,18 @@ public class ReviewActivity extends AppCompatActivity {
                     Query tagQuery = db.collection("ECG")
                             .whereEqualTo("url", link);
                     Task<QuerySnapshot> tagQueryTask = tagQuery.get();
-
+                    RunnableTask runnable = new RunnableTask(tagQueryTask);
+                    Thread thread = new Thread(runnable);
+                    thread.start();
+                    try {
+                        thread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    QuerySnapshot tagQuerySnapshot = runnable.getValue();
+                    DocumentReference confirmReviewDocRef = tagQuerySnapshot.getDocuments().get(0).getReference();
+                    confirmReviewDocRef.update("complete",true);
                 }
-
             });
             alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override

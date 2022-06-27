@@ -13,6 +13,8 @@ import android.view.View;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -25,13 +27,14 @@ import java.util.List;
 public class OtherEssaysActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
 
     public static final String TAG = "OtherEssaysActivity";
-
+    private FirebaseUser mUser;
     private ArrayList<HashMap<String, String>> mDatabaseEssays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_essays);
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.myRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -116,5 +119,23 @@ public class OtherEssaysActivity extends AppCompatActivity implements MyRecycler
     @Override
     public void onItemClick(View view, int position) {
         // firebase stuff
+        // set review = user
+        String link = mDatabaseEssays.get(position).get("url");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // asynchronously retrieve multiple documents
+        Query tagQuery = db.collection("ECG")
+                .whereEqualTo("url", link);
+        Task<QuerySnapshot> tagQueryTask = tagQuery.get();
+        RunnableTask runnable = new RunnableTask(tagQueryTask);
+        Thread thread = new Thread(runnable);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        QuerySnapshot tagQuerySnapshot = runnable.getValue();
+        DocumentReference confirmReviewDocRef = tagQuerySnapshot.getDocuments().get(0).getReference();
+        confirmReviewDocRef.update("reviewer",mUser.getDisplayName());
     }
 }
