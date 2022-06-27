@@ -15,7 +15,6 @@ public class ChangeTagsActivity extends AppCompatActivity {
     private Button tagEnglish;
     private Button tagSocial;
     private Button tagScience;
-    private Button returnToProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +28,8 @@ public class ChangeTagsActivity extends AppCompatActivity {
         tagSocial.setOnClickListener(this::onClickSocial);
         tagScience = findViewById(R.id.tagScience);
         tagScience.setOnClickListener(this::onClickScience);
-
-        returnToProfile = findViewById(R.id.returnToProfile);
-        returnToProfile.setOnClickListener(this::onReturnToProfile);
     }
 
-    private void onReturnToProfile(View v) {
-        Intent intent = new Intent(ChangeTagsActivity.this, MenuActivity.class);
-        startActivity(intent);
-    }
     private void onClickMath(View v){
 
     }
