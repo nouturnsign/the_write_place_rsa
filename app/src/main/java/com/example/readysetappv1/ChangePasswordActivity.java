@@ -16,67 +16,60 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class ChangePasswordActivity extends AppCompatActivity {
 
     final public static String TAG = "ChangePassword";
 
-    private Button returnToProfile;
-    private EditText password1;
-    private EditText password2;
-    private Button submitPassword;
+    private EditText inputPassword;
+    private EditText confirmPassword;
+    private Button submitNewPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
 
-        returnToProfile = findViewById(R.id.returnToProfile);
-        returnToProfile.setOnClickListener(this::onReturnToProfile);
-
-        password1 = findViewById(R.id.passwordInput);
-
-        password2 = findViewById(R.id.confirmPassword);
-
-        submitPassword = findViewById(R.id.submitNewPassword);
-        submitPassword.setOnClickListener(this::onSubmitPassword);
-
-    }
-
-    private void onReturnToProfile(View v) {
-        Intent intent = new Intent(ChangePasswordActivity.this, MenuActivity.class);
-        startActivity(intent);
+        inputPassword = findViewById(R.id.edit_input_password);
+        confirmPassword = findViewById(R.id.edit_confirm_password);
+        submitNewPassword = findViewById(R.id.button_submit_new_password);
+        submitNewPassword.setOnClickListener(this::onSubmitPassword);
     }
 
     private void changePassword(String newPassword) {
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        try {
+            Objects.requireNonNull(user);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "Failed to get current user.", e);
+            return;
+        }
 
         user.updatePassword(newPassword)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "User password updated.");
-                            Toast.makeText(ChangePasswordActivity.this, "Changed password.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.w(TAG, "Failed to update user password.", task.getException());
-                            Toast.makeText(ChangePasswordActivity.this, "Failed to change password.", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.i(TAG, "Successfully updated user password.");
+                        Toast.makeText(ChangePasswordActivity.this, "Changed password.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.i(TAG, "Failed to update user password.", task.getException());
+                        Toast.makeText(ChangePasswordActivity.this, "Failed to change password.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void onSubmitPassword(View v) {
 
-        String attemptPassword = password1.getText().toString();
-        String confirmPassword = password2.getText().toString();
+        String inputPasswordAsString = inputPassword.getText().toString();
+        String confirmPasswordAsString = confirmPassword.getText().toString();
 
-        if (!attemptPassword.equals(confirmPassword)) {
-            Toast.makeText(getApplicationContext(), "Failed: " + attemptPassword + " and " + confirmPassword + " do not match.", Toast.LENGTH_LONG).show();
+        if (!inputPasswordAsString.equals(confirmPasswordAsString)) {
+            Toast.makeText(getApplicationContext(), "Failed: " + inputPasswordAsString + " and " + confirmPasswordAsString + " do not match.", Toast.LENGTH_LONG).show();
         } else {
-            changePassword(attemptPassword);
-            onReturnToProfile(v);
+            changePassword(inputPasswordAsString);
+            Intent intent = new Intent(ChangePasswordActivity.this, MenuActivity.class);
+            startActivity(intent);
         }
-
     }
-
 }
