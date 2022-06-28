@@ -29,7 +29,7 @@ public class FeedbackActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feedback);
         openInDocs = findViewById(R.id.button_open);
         openInDocs.setOnClickListener(this::onClickOpen);
-        rateFeedback = findViewById(R.id.RateFeedback);
+        rateFeedback = findViewById(R.id.button_rate_feedback);
         rateFeedback.setOnClickListener(this::onClickRateFeedback);
 
     }

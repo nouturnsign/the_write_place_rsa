@@ -34,7 +34,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.InputStream;
 import java.util.Objects;
 
 
@@ -89,7 +88,7 @@ public class ProfileFragment extends Fragment {
         pfps = FirebaseStorage.getInstance();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         profilePicture = v.findViewById(R.id.profilePicture);
-        changeTag = v.findViewById(R.id.profileTag);
+        changeTag = v.findViewById(R.id.button_change_tags);
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child("pfps/"+mUser.getEmail().hashCode()+".jpeg");
         Glide.with(this /* context */).load(storageReference).into(profilePicture);
@@ -146,12 +145,12 @@ public class ProfileFragment extends Fragment {
             Log.e(TAG, "email:failure", e);
         }
 
-        changePassword = v.findViewById(R.id.profileChangePassword);
+        changePassword = v.findViewById(R.id.button_change_password);
         changePassword.setOnClickListener(this::onChangePassword);
 
 
 
-        signOutButton = v.findViewById(R.id.signOutButton);
+        signOutButton = v.findViewById(R.id.button_sign_out);
         signOutButton.setOnClickListener(this::onSignOut);
 
         return v;

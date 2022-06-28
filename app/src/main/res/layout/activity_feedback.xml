@@ -27,7 +27,7 @@
         app:layout_constraintVertical_bias="0.127" />
 
     <Button
-        android:id="@+id/RateFeedback"
+        android:id="@+id/button_rate_feedback"
         android:layout_width="@dimen/SBSL"
         android:layout_height="@dimen/SBSL"
         android:layout_marginStart="45dp"
