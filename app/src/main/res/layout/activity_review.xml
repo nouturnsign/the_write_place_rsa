@@ -9,17 +9,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".WorkspaceActivity"
+    tools:context=".ReviewActivity"
     android:orientation="vertical">
 
-    <!--TODO: Write general button style-->
-    <!--TODO: Just make it less scuffed-->
-
     <Button
-        android:id="@+id/Open"
+        android:id="@+id/button_open"
         android:layout_width="@dimen/SBSL"
         android:layout_height="@dimen/SBSL"
-        android:text="Open in Docs"
+        android:text="@string/open_in_docs"
         android:textColor="@color/black"
         app:backgroundTint="@color/gray2"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,11 +27,11 @@
         app:layout_constraintVertical_bias="0.127" />
 
     <Button
-        android:id="@+id/Cosmetic"
+        android:id="@+id/button_confirm_review"
         android:layout_width="@dimen/SBSL"
         android:layout_height="@dimen/SBSL"
         android:layout_marginStart="45dp"
-        android:text="Cosmetic"
+        android:text="@string/finished_reviewing"
         android:textColor="@color/black"
         app:backgroundTint="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"
