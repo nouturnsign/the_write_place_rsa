@@ -89,8 +89,6 @@ public class ToReviewListFragment extends Fragment implements EssayListAdapter.I
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_to_review_list, container, false);
-        // Fake data
-        // TODO: replace with real user stuff
         try {
             mDatabaseEssays = generateDatabaseEssayTitles();
             Log.i(TAG, "success");
@@ -161,7 +159,7 @@ public class ToReviewListFragment extends Fragment implements EssayListAdapter.I
 
         for (int i=0; i<numQueries; i++) {
             HashMap<String, String> review = new HashMap<>();
-            review.put("submitter", submitterUsername.get(i));//todo: possible confuzzlement
+            review.put("submitter", submitterUsername.get(i));
             review.put("date",date.get(i));
             review.put("essayTitle", essayTitle.get(i));
             review.put("url",url.get(i));
@@ -176,7 +174,6 @@ public class ToReviewListFragment extends Fragment implements EssayListAdapter.I
 
     @Override
     public void onItemClick(View view, int position) {
-        // TODO: Make this actually do something
         Intent intent = new Intent(getActivity(), ReviewActivity.class);
         intent.putExtra("url",mDatabaseEssays.get(position).get("url"));
         startActivity(intent);
