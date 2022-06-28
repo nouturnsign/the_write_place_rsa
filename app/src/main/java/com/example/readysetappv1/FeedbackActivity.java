@@ -9,9 +9,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -50,29 +53,18 @@ public class FeedbackActivity extends AppCompatActivity {
         //dialog, completed = true
         //todo: change the dialog to edittext where the submitter can enter
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("uwu");
-        alert.setMessage("Are you done reviewing?");
+        alert.setTitle("Rate the Feedback");
+        alert.setMessage("if they did bad let them know lol");
+        EditText input = new EditText(v.getContext());
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setHint("Rating (1-10)");
+        input.setGravity(Gravity.CENTER);
+        input.setMaxLines(1);
+        alert.setView(input);
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i){
-                //change field complete to true
-                String link = getIntent().getStringExtra("url");
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                // asynchronously retrieve multiple documents
-                Query tagQuery = db.collection("ECG")
-                        .whereEqualTo("url", link);
-                Task<QuerySnapshot> tagQueryTask = tagQuery.get();
-                RunnableTask runnable = new RunnableTask(tagQueryTask);
-                Thread thread = new Thread(runnable);
-                thread.start();
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                QuerySnapshot tagQuerySnapshot = runnable.getValue();
-                DocumentReference confirmReviewDocRef = tagQuerySnapshot.getDocuments().get(0).getReference();
-                confirmReviewDocRef.update("complete",true);
+                int rating = Integer.parseInt(input.getText().toString());
             }
         });
         alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
