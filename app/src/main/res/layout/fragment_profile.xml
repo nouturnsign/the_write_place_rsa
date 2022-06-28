@@ -43,7 +43,7 @@
             android:textSize="24sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/profileChangePassword"
+            android:id="@+id/button_change_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profileEmail"
@@ -54,10 +54,10 @@
             android:id="@+id/profileTagContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/profileChangePassword">
+            android:layout_below="@id/button_change_password">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/profileTag"
+                android:id="@+id/button_change_tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -82,7 +82,7 @@
             android:layout_margin="@dimen/margin_small" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/signOutButton"
+            android:id="@+id/button_sign_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/profileDividerBottom"

@@ -16,10 +16,10 @@
     <!--TODO: Just make it less scuffed-->
 
     <Button
-        android:id="@+id/Open"
+        android:id="@+id/button_open"
         android:layout_width="@dimen/SBSL"
         android:layout_height="@dimen/SBSL"
-        android:text="Open in Docs"
+        android:text="@string/open_in_docs"
         android:textColor="@color/black"
         app:backgroundTint="@color/gray2"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,11 +30,11 @@
         app:layout_constraintVertical_bias="0.127" />
 
     <Button
-        android:id="@+id/RateFeedback"
+        android:id="@+id/button_rate_feedback"
         android:layout_width="@dimen/SBSL"
         android:layout_height="@dimen/SBSL"
         android:layout_marginStart="45dp"
-        android:text="Rate Feedback"
+        android:text="@string/rate_feedback"
         android:textColor="@color/black"
         app:backgroundTint="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"

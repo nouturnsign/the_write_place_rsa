@@ -30,7 +30,7 @@ public class ReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
-        openInDocs = findViewById(R.id.Open);
+        openInDocs = findViewById(R.id.button_open);
         openInDocs.setOnClickListener(this::onClickOpen);
         cosmetic = findViewById(R.id.Cosmetic); //cosmetic = confirm
         cosmetic.setOnClickListener(this::onClickCosmetic);

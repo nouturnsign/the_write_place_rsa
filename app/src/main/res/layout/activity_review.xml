@@ -16,7 +16,7 @@
     <!--TODO: Just make it less scuffed-->
 
     <Button
-        android:id="@+id/Open"
+        android:id="@+id/button_open"
         android:layout_width="@dimen/SBSL"
         android:layout_height="@dimen/SBSL"
         android:text="Open in Docs"

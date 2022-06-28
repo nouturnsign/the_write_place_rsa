@@ -17,12 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-
 public class FeedbackActivity extends AppCompatActivity {
 
     private static final String TAG = "Feedback";
@@ -33,9 +27,9 @@ public class FeedbackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
-        openInDocs = findViewById(R.id.Open);
+        openInDocs = findViewById(R.id.button_open);
         openInDocs.setOnClickListener(this::onClickOpen);
-        rateFeedback = findViewById(R.id.RateFeedback);
+        rateFeedback = findViewById(R.id.button_rate_feedback);
         rateFeedback.setOnClickListener(this::onClickRateFeedback);
 
     }
