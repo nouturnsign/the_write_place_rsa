@@ -11,24 +11,77 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.ViewHolder> {
 
     private static final String TAG = "EssayListAdapter";
 
-    private final List<HashMap<String, String>> mData;
+    private final List<String> ATTRIBUTES = Arrays.asList("submitter", "reviewer", "date", "url", "tag"); // essayTitle at .getId()
+    private final List<Map<String, String>> mDatabaseEssays;
     private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    // data is passed into the constructor
-    EssayListAdapter(Context context, ArrayList<HashMap<String, String>> data) {
+    // List<Map<String, String>> is passed into the constructor
+    public EssayListAdapter(Context context, List<Map<String, String>> databaseEssays) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
+        this.mDatabaseEssays = databaseEssays;
+    }
+
+    // Query is passed into the constructor
+    public EssayListAdapter(Context context, Query tagQuery) {
+        this.mInflater = LayoutInflater.from(context);
+        this.mDatabaseEssays = getDatabaseEssays(tagQuery);
+    }
+
+    public List<Map<String, String>> getDatabaseEssays() {
+        return mDatabaseEssays;
+    }
+
+    private List<Map<String, String>> getDatabaseEssays(Query tagQuery) {
+        Task<QuerySnapshot> tagQueryTask = tagQuery.get();
+
+        tagQueryTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "Successfully retrieved essays from database");
+            } else {
+                Log.i(TAG, "Failed to retrieve essays from database");
+            }
+        });
+
+        List<Map<String, String>> databaseEssays = new ArrayList<>();
+        RunnableTask runnable = new RunnableTask(tagQueryTask);
+        Thread thread = new Thread(runnable);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        QuerySnapshot tagQuerySnapshot = runnable.getValue();
+
+        for (DocumentSnapshot document : tagQuerySnapshot.getDocuments()) {
+            Map<String, String> documentAttributes = new HashMap<>();
+            documentAttributes.put("essayTitle", document.getId());
+            for (String attribute : ATTRIBUTES) {
+                documentAttributes.put(attribute, (String) document.get(attribute));
+            }
+            databaseEssays.add(documentAttributes);
+        }
+        //todo: tags and profile pictures
+
+        return databaseEssays;
     }
 
     // inflates the row layout from xml when needed
@@ -41,8 +94,8 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        HashMap<String, String> review = mData.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Map<String, String> review = mDatabaseEssays.get(position);
         /*
             submitterUsername.add(document.get("username").toString());
             date.add(document.get("date").toString());
@@ -76,7 +129,7 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
     public int getItemCount() {
         try {
             Log.v(TAG, "Successfully invoked getItemCount.");
-            return mData.size();
+            return mDatabaseEssays.size();
         } catch (NullPointerException e) {
             Log.w(TAG, "Failed to invoke getItemCount.");
             return 0;
@@ -109,8 +162,8 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
     }
 
     // convenience method for getting data at click position
-    HashMap<String, String> getItem(int id) {
-        return mData.get(id);
+    Map<String, String> getItem(int id) {
+        return mDatabaseEssays.get(id);
     }
 
     // allows clicks events to be caught

@@ -3,30 +3,23 @@ package com.example.readysetappv1;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,15 +30,13 @@ public class FeedbackListFragment extends Fragment implements EssayListAdapter.I
 
     private static final String TAG = "FeedbackList";
 
-    EssayListAdapter adapter;
-    private FirebaseUser mUser;
-    private Button otherEssaysButton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "databaseEssays";
+    private static final String ARG_PARAM1 = "workspace_index";
 
     // TODO: Rename and change types of parameters
-    private ArrayList<HashMap<String, String>> mDatabaseEssays;
+    private List<Map<String, String>> mDatabaseEssays;
+    private int mWorkspaceIndex;
 
     public FeedbackListFragment() {
         // Required empty public constructor
@@ -55,19 +46,14 @@ public class FeedbackListFragment extends Fragment implements EssayListAdapter.I
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param databaseEssays List of maps that represents essays fetched from the database.
+     * @param workspace_index Index of workspace (0, 1).
      * @return A new instance of fragment FeedbackListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FeedbackListFragment newInstance(@NonNull ArrayList<HashMap<String, String>> databaseEssays) {
+    public static FeedbackListFragment newInstance(int workspace_index) {
         FeedbackListFragment fragment = new FeedbackListFragment();
         Bundle args = new Bundle();
-
-        ArrayList<ParcelableEssay> parcelableEssayList = new ArrayList<>();
-        for (int i=0; i<databaseEssays.size(); i++) {
-            parcelableEssayList.set(i, new ParcelableEssay(databaseEssays.get(i)));
-        }
-        args.putParcelableArrayList(ARG_PARAM1, parcelableEssayList);
+        args.putInt(ARG_PARAM1, workspace_index);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,11 +62,7 @@ public class FeedbackListFragment extends Fragment implements EssayListAdapter.I
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            ArrayList<ParcelableEssay> parcelableEssayArrayList = getArguments().getParcelableArrayList(ARG_PARAM1);
-            mDatabaseEssays = new ArrayList<>();
-            for (ParcelableEssay essay : parcelableEssayArrayList) {
-                mDatabaseEssays.add(essay.toHashMap());
-            }
+            mWorkspaceIndex = getArguments().getInt(ARG_PARAM1);
         }
     }
 
@@ -89,90 +71,32 @@ public class FeedbackListFragment extends Fragment implements EssayListAdapter.I
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_feedback_list, container, false);
-        try {
-            mDatabaseEssays = generateDatabaseEssayTitles();
-            Log.i(TAG, "success");
-        } catch (Exception e) {
-            Log.e(TAG, "failure", e);
-        } finally {
-            Log.v(TAG, "attempted");
-        }
+
         // set up the RecyclerView
         RecyclerView recyclerView = v.findViewById(R.id.myRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new EssayListAdapter(getContext(), mDatabaseEssays);
+
+        // define query
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Query tagQuery =
+                db
+                .collection("ECG") // TODO: change this by workspace and tag
+                .whereEqualTo("submitter", mUser.getDisplayName());
+
+        // let adapter do the rest of the work
+        EssayListAdapter adapter = new EssayListAdapter(getContext(), tagQuery);
+        mDatabaseEssays = adapter.getDatabaseEssays();
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         return v;
     }
 
-    private ArrayList<HashMap<String, String>> generateDatabaseEssayTitles() {
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // asynchronously retrieve multiple documents
-        Log.v(TAG, "user"+mUser.getDisplayName());
-        Query tagQuery = db.collection("ECG")
-                .whereEqualTo("submitter",mUser.getDisplayName());
-        Task<QuerySnapshot> tagQueryTask = tagQuery.get();
-
-        tagQueryTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                }
-            }
-        });
-
-        ArrayList<HashMap<String, String>> databaseEssays = new ArrayList<>();
-        RunnableTask runnable = new RunnableTask(tagQueryTask);
-        Thread thread = new Thread(runnable);
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        QuerySnapshot tagQuerySnapshot = runnable.getValue();
-
-        List<String> submitterUsername = new ArrayList<>();
-        List<String> date = new ArrayList<>();
-        List<String> essayTitle = new ArrayList<>();
-        List<String> url = new ArrayList<>();
-        List<String> tag = new ArrayList<>();
-        int numQueries = 0;
-        for (DocumentSnapshot document : tagQuerySnapshot.getDocuments()) {
-            submitterUsername.add(document.get("submitter").toString());
-            date.add(document.get("date").toString());
-            essayTitle.add(document.getId());
-            url.add(document.get("url").toString());
-            tag.add(document.get("tag").toString());
-            numQueries++;
-        }
-        //todo: tags and profile pictures
-        //int[] profilePicture = new int[] {R.drawable.jason_square, R.drawable.eric_square, R.drawable.roshan_square, R.drawable.anika_square, R.drawable.michael_square, R.drawable.giggy_square, R.drawable.generic_profile_picture};
-        //int[] tagPicture = new int[] {R.drawable.engtag, R.drawable.mathtag, R.drawable.histtag, R.drawable.frenchtag, R.drawable.phystag, R.drawable.sciencetag, R.drawable.chemtag};
-
-        for (int i=0; i<numQueries; i++) {
-            HashMap<String, String> feedback = new HashMap<>();
-            feedback.put("submitter", submitterUsername.get(i));
-            feedback.put("date",date.get(i));
-            feedback.put("essayTitle", essayTitle.get(i));
-            feedback.put("url",url.get(i));
-            //review.put("profilePicture", String.valueOf(profilePicture[i]));
-            //review.put("tagPicture", String.valueOf(tagPicture[i]));
-            databaseEssays.add(feedback);
-        }
-
-        return databaseEssays;
-
-    }
-
     @Override
     public void onItemClick(View view, int position) {
+        // TODO: Make this actually do something
         Intent intent = new Intent(getActivity(), FeedbackActivity.class);
         intent.putExtra("url",mDatabaseEssays.get(position).get("url"));
         startActivity(intent);
     }
-
 }
