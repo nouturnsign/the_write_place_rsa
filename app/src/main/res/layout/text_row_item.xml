@@ -13,7 +13,7 @@
 
     <!--TODO: Require a square image-->
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profilePicture"
+        android:id="@+id/image_profile_picture"
         android:layout_width="@dimen/profile_picture_diameter"
         android:layout_height="@dimen/profile_picture_diameter"
         android:layout_marginStart="@dimen/margin_medium"
@@ -30,7 +30,7 @@
         android:layout_height="@dimen/profile_picture_diameter"
         android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_medium"
-        android:layout_toEndOf="@id/profilePicture"
+        android:layout_toEndOf="@id/image_profile_picture"
         android:gravity="center_vertical"
         android:text="@string/example_reviewer_username"
         android:textColor="@color/black"
@@ -52,7 +52,7 @@
         android:id="@+id/profileDivider"
         style="@style/divider"
         android:backgroundTint="@color/black"
-        android:layout_below="@id/profilePicture"
+        android:layout_below="@id/image_profile_picture"
         android:layout_margin="@dimen/margin_small" />
 
     <TextView

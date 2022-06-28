@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -150,7 +149,7 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
             usernameView = itemView.findViewById(R.id.profileUsername);
             dateView = itemView.findViewById(R.id.profileDate);
             essayTitleView = itemView.findViewById(R.id.essayTitle);
-            profilePictureView = itemView.findViewById(R.id.profilePicture);
+            profilePictureView = itemView.findViewById(R.id.image_profile_picture);
             tagPictureView = itemView.findViewById(R.id.tagPicture);
             itemView.setOnClickListener(this);
         }

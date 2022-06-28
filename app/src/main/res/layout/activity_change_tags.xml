@@ -6,7 +6,7 @@
     tools:context=".ProfileFragment">
 
     <RelativeLayout
-        android:id="@+id/profileContainer"
+        android:id="@+id/relative_profile_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="-16dp"

@@ -87,7 +87,7 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         pfps = FirebaseStorage.getInstance();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        profilePicture = v.findViewById(R.id.profilePicture);
+        profilePicture = v.findViewById(R.id.image_profile_picture);
         changeTag = v.findViewById(R.id.button_change_tags);
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child("pfps/"+mUser.getEmail().hashCode()+".jpeg");
@@ -137,7 +137,7 @@ public class ProfileFragment extends Fragment {
             Log.e(TAG, "displayName:failure", e);
         }
 
-        email = v.findViewById(R.id.profileEmail);
+        email = v.findViewById(R.id.text_profile_email);
         try {
             email.setText(getString(R.string.email).concat(" ").concat(Objects.requireNonNull(mUser.getEmail())));
             Log.d(TAG, "email:success");
