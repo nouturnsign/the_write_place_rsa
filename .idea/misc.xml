@@ -16,6 +16,7 @@
         <entry key="app/src/main/res/layout/activity_change_tags.xml" value="0.19519927536231885" />
         <entry key="app/src/main/res/layout/activity_feedback.xml" value="0.19964721237403754" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.21342592592592594" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.19519927536231885" />
         <entry key="app/src/main/res/layout/activity_login_page.xml" value="0.24741973876953127" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.33425925925925926" />
         <entry key="app/src/main/res/layout/activity_other_essays.xml" value="0.19519927536231885" />
@@ -26,6 +27,7 @@
         <entry key="app/src/main/res/layout/fragment_feedback_list.xml" value="0.33425925925925926" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.24400301332826968" />
         <entry key="app/src/main/res/layout/fragment_review_list.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_to_review_list.xml" value="0.19519927536231885" />
         <entry key="app/src/main/res/layout/fragment_upload.xml" value="0.34109428159652216" />
         <entry key="app/src/main/res/layout/rating_input.xml" value="0.10953026196928636" />
         <entry key="app/src/main/res/layout/text_row_item.xml" value="0.38095238095238093" />
