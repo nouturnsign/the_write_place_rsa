@@ -72,6 +72,7 @@
     <string name="reset">Reset</string>
     <string name="open_in_docs">Open in Docs</string>
     <string name="finished_reviewing">Finished Reviewing</string>
+    <string name="rate_feedback">Rate Feedback</string>
 
     <!--Tags-->
     <string-array name="subject_array">
