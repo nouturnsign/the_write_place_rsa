@@ -8,19 +8,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
@@ -90,7 +85,7 @@ public class ToReviewListFragment extends Fragment implements EssayListAdapter.I
         View v = inflater.inflate(R.layout.fragment_to_review_list, container, false);
 
         // set up OtherEssays
-        otherEssaysButton = v.findViewById(R.id.otherEssaysButton);
+        otherEssaysButton = v.findViewById(R.id.button_other_essays);
         otherEssaysButton.setOnClickListener(this::onClickOtherEssays);
 
         // set up the RecyclerView
