@@ -66,7 +66,7 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
         try {
             thread.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.w(TAG, "Failed to make query to database", e);
         }
         QuerySnapshot tagQuerySnapshot = runnable.getValue();
 

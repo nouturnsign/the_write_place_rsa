@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,11 +80,18 @@ public class FeedbackListFragment extends Fragment implements EssayListAdapter.I
 
         // define query
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        try {
+            Objects.requireNonNull(mUser);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "User display name is null for some reason, maybe not signed in?", e);
+            return v;
+        }
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String submitter = mUser.getDisplayName();
         Query tagQuery =
                 db
                 .collection("ECG") // TODO: change this by workspace and tag
-                .whereEqualTo("submitter", mUser.getDisplayName());
+                .whereEqualTo("submitter", submitter);
 
         // let adapter do the rest of the work
         EssayListAdapter adapter = new EssayListAdapter(getContext(), tagQuery);
@@ -94,7 +103,6 @@ public class FeedbackListFragment extends Fragment implements EssayListAdapter.I
 
     @Override
     public void onItemClick(View view, int position) {
-        // TODO: Make this actually do something
         Intent intent = new Intent(getActivity(), FeedbackActivity.class);
         intent.putExtra("url",mDatabaseEssays.get(position).get("url"));
         startActivity(intent);

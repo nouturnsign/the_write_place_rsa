@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OtherEssaysActivity extends AppCompatActivity implements EssayListAdapter.ItemClickListener {
 
@@ -36,6 +37,12 @@ public class OtherEssaysActivity extends AppCompatActivity implements EssayListA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_essays);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
+        try {
+            Objects.requireNonNull(mUser);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "User display name is null for some reason, maybe not signed in?", e);
+            return;
+        }
 
         // set up the recycler view
         RecyclerView mRecyclerView = findViewById(R.id.myRecyclerView);
@@ -64,7 +71,8 @@ public class OtherEssaysActivity extends AppCompatActivity implements EssayListA
         String link = mDatabaseEssays.get(position).get("url");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // asynchronously retrieve multiple documents
-        Query tagQuery = db.collection("ECG")
+        Query tagQuery = db
+                .collection("ECG") // TODO: get the correct workspace
                 .whereEqualTo("url", link);
         Task<QuerySnapshot> tagQueryTask = tagQuery.get();
         RunnableTask runnable = new RunnableTask(tagQueryTask);
@@ -73,7 +81,8 @@ public class OtherEssaysActivity extends AppCompatActivity implements EssayListA
         try {
             thread.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.w(TAG, "Failed to join query thread", e);
+            return;
         }
         QuerySnapshot tagQuerySnapshot = runnable.getValue();
         DocumentReference confirmReviewDocRef = tagQuerySnapshot.getDocuments().get(0).getReference();

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -94,6 +96,12 @@ public class ToReviewListFragment extends Fragment implements EssayListAdapter.I
 
         // define query
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        try {
+            Objects.requireNonNull(mUser);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "User display name is null for some reason, maybe not signed in?", e);
+            return v;
+        }
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Query tagQuery =
                 db

@@ -1,5 +1,7 @@
 package com.example.readysetappv1;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -7,6 +9,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.concurrent.ExecutionException;
 
 public class RunnableTask implements Runnable {
+
+    private static final String TAG = "RunnableTask";
+
     private volatile QuerySnapshot value;
     private Task<QuerySnapshot> task;
 
@@ -19,10 +24,9 @@ public class RunnableTask implements Runnable {
     public void run() {
         try {
             value = Tasks.await(task);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (ExecutionException | InterruptedException e) {
+            value = null;
+            Log.w(TAG, "Failed to process query", e);
         }
     }
 

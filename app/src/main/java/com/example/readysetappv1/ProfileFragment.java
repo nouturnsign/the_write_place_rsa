@@ -90,42 +90,42 @@ public class ProfileFragment extends Fragment {
         profilePicture = v.findViewById(R.id.image_profile_picture);
         changeTag = v.findViewById(R.id.button_change_tags);
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
-                .child("pfps/"+mUser.getEmail().hashCode()+".jpeg");
+                .child("pfps/"+mUser.getUid()+".jpeg");
         Glide.with(this /* context */).load(storageReference).into(profilePicture);
 
         profilePicture.setOnClickListener(this::onClickProfilePicture);
         changeTag.setOnClickListener(this::onClickChangeTags);
         filePicker = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // Here, no request code
-                            Intent data = result.getData();
-                            try {
-                                Uri imageUri = data.getData();
-                                uploadPFPToStorage(imageUri);
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                        .setPhotoUri(imageUri).build();
-                                mUser.updateProfile(profileUpdates)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Log.d(TAG, "User profile updated.");
-                                                }
-                                            }
-                                        });
-
-                                // InputStream iStream = getContext().getContentResolver().openInputStream(imageUri);
-                                Log.d(TAG, "uploadPFP:success");
-                            } catch (Exception e) {
-                                Log.e(TAG, "uploadPFP:failure", e);
-                            }
-                        } else {
-                            Log.w(TAG, "uploadPFP:failure");
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // Here, no request code
+                        Intent data = result.getData();
+                        try {
+                            Objects.requireNonNull(data);
+                        } catch (NullPointerException e) {
+                            Log.w(TAG, "Failed to get image data from file picker", e);
+                            return;
                         }
+                        try {
+                            Uri imageUri = data.getData();
+                            uploadPFPToStorage(imageUri);
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setPhotoUri(imageUri).build();
+                            mUser.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "User profile updated.");
+                                        }
+                                    });
+
+                            // InputStream iStream = getContext().getContentResolver().openInputStream(imageUri);
+                            Log.d(TAG, "uploadPFP:success");
+                        } catch (Exception e) {
+                            Log.e(TAG, "uploadPFP:failure", e);
+                        }
+                    } else {
+                        Log.w(TAG, "uploadPFP:failure");
                     }
                 });
 
@@ -170,22 +170,16 @@ public class ProfileFragment extends Fragment {
     private void uploadPFPToStorage(Uri uri){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference riversRef = storageRef.child("pfps/"+mUser.getEmail().hashCode()+".jpeg");
+        StorageReference riversRef = storageRef.child("pfps/"+mUser.getUid()+".jpeg");
         UploadTask uploadTask = riversRef.putFile(uri);
         // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Log.d(TAG,"pfp upload failed", exception);
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-                Log.v(TAG, "pfp upload success");
-            }
+        uploadTask.addOnFailureListener(exception -> {
+            // Handle unsuccessful uploads
+            Log.d(TAG,"pfp upload failed", exception);
+        }).addOnSuccessListener(taskSnapshot -> {
+            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+            // ...
+            Log.v(TAG, "pfp upload success");
         });
     }
 

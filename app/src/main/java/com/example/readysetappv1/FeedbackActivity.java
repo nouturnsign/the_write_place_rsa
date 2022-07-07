@@ -40,7 +40,7 @@ public class FeedbackActivity extends AppCompatActivity {
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Log.w(TAG, "oop", e);
+            Log.w(TAG, "Unable to open Google Docs", e);
         }
     }
     private void onClickRateFeedback(View v){

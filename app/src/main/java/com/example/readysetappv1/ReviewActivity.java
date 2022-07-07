@@ -59,7 +59,8 @@ public class ReviewActivity extends AppCompatActivity {
             String link = getIntent().getStringExtra("url");
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             // asynchronously retrieve multiple documents
-            Query tagQuery = db.collection("ECG")
+            Query tagQuery = db
+                    .collection("ECG")
                     .whereEqualTo("url", link);
             Task<QuerySnapshot> tagQueryTask = tagQuery.get();
             RunnableTask runnable = new RunnableTask(tagQueryTask);
@@ -68,7 +69,8 @@ public class ReviewActivity extends AppCompatActivity {
             try {
                 thread.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.w(TAG, "Failed to join query thread", e);
+                return;
             }
             QuerySnapshot tagQuerySnapshot = runnable.getValue();
             DocumentReference confirmReviewDocRef = tagQuerySnapshot.getDocuments().get(0).getReference();

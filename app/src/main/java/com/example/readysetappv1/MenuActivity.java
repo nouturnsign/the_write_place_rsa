@@ -1,6 +1,7 @@
 package com.example.readysetappv1;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -29,23 +30,20 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // By using switch we can easily get
-        // the selected fragment
-        // by using there id.
-        Fragment selectedFragment = null;
-        switch (item.getItemId()) {
-            case R.id.profile:
-                selectedFragment = new ProfileFragment();
-                break;
-            case R.id.review:
-                selectedFragment = new ToReviewListFragment();
-                break;
-            case R.id.upload:
-                selectedFragment = new UploadFragment();
-                break;
-            case R.id.feedback:
-                selectedFragment = new FeedbackListFragment();
-                break;
+        Fragment selectedFragment;
+        int itemId = item.getItemId();
+        // effectively a switch statement, but allowing for nonfinal resource ids
+        if (itemId == R.id.profile) {
+            selectedFragment = new ProfileFragment();
+        } else if (itemId == R.id.review) {
+            selectedFragment = new ToReviewListFragment();
+        } else if (itemId == R.id.upload) {
+            selectedFragment = new UploadFragment();
+        } else if (itemId == R.id.feedback) {
+            selectedFragment = new FeedbackListFragment();
+        } else {
+            Log.w(TAG, "Failed to get associated menu item.");
+            return false; // how? nothing will be selected
         }
         // It will help to replace the
         // one fragment to other.
