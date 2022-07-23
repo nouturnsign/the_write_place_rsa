@@ -1,5 +1,6 @@
 package com.example.readysetappv1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,9 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -50,6 +57,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void createAccount(String email, String password, String username) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> tags = new HashMap<>();
+        tags.put("English",true);
+        tags.put("Math",true);
+        tags.put("Social",true);
+        tags.put("Science",true);
+        final String WORKSPACE = "Users";
+        db.collection(WORKSPACE).document(username).set(tags)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "tags created!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error creating tags+", e);
+                    }
+                });
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.createUserWithEmailAndPassword(email, password)
