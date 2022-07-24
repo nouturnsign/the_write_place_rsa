@@ -75,6 +75,10 @@
     <string name="rate_feedback">Rate Feedback</string>
     <string name="other_essays">Other Essays</string>
     <string name="profile_picture_square_image">Profile Picture Square Image</string>
+    <string name="math">Math</string>
+    <string name="english">English</string>
+    <string name="social">Social</string>
+    <string name="science">Science</string>
 
     <!--Tags-->
     <string-array name="subject_array">

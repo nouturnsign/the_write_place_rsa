@@ -22,6 +22,9 @@
             android:name=".ChangePasswordActivity"
             android:exported="false" /> <!-- TODO: Prettier labels -->
         <activity
+            android:name=".ChangeTagsActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:label="Login Activity">

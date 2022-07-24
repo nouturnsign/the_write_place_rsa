@@ -3,60 +3,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ProfileFragment">
 
     <RelativeLayout
         android:id="@+id/relative_profile_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="-29dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
 
         <Button
             android:id="@+id/tagMath"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/tagScience"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="214dp"
-            android:layout_marginEnd="78dp"
-            android:layout_marginBottom="292dp"
-            android:text="Math" />
+            android:layout_width="@dimen/tag_width"
+            android:layout_height="57dp"
+            android:layout_below="@+id/textView2"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="-550dp"
+            android:minHeight="48dp"
+            android:text="@string/math"
+            android:textColor="#00838F" />
 
         <Button
             android:id="@+id/tagEnglish"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/tag_width"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/tagSocial"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="61dp"
-            android:layout_marginTop="208dp"
-            android:layout_marginEnd="86dp"
-            android:layout_marginBottom="297dp"
-            android:layout_toStartOf="@+id/tagMath"
-            android:text="English" />
+            android:layout_below="@+id/textView2"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-550dp"
+            android:layout_marginEnd="71dp"
+            android:text="@string/english"
+            android:textColor="#00838F" />
 
         <Button
             android:id="@+id/tagSocial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="253dp"
-            android:layout_marginBottom="130dp"
-            android:text="Social" />
+            android:layout_below="@+id/tagMath"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="289dp"
+            android:text="@string/social"
+            android:textColor="#00838F" />
+
 
         <Button
             android:id="@+id/tagScience"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tagEnglish"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="258dp"
+            android:layout_marginTop="306dp"
+            android:layout_marginEnd="50dp"
+            android:text="@string/science"
+            android:textColor="#00838F" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="130dp"
-            android:text="Science" />
+            android:layout_marginStart="170dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="170dp"
+            android:layout_marginBottom="650dp"
+            android:text="TextView" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

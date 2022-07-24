@@ -9,7 +9,7 @@
 
     <!--Fluffy-->
     <dimen name="SBSL">150dp</dimen>
-
+    <dimen name="tag_width">100dp</dimen>
     <!--Feedback List Fragment-->
     <dimen name="list_item_height">180dp</dimen>
     <dimen name="margin_small">5dp</dimen>
