@@ -19,6 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.function.Consumer;
+
 public class ChangeTagsActivity extends AppCompatActivity {
 
     private static final String TAG = "ChangeTags";
@@ -33,46 +35,39 @@ public class ChangeTagsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_tags);
         tagMath = findViewById(R.id.tagMath);
-        tagMath.setOnClickListener(this::onClickMath);
+        tagMath.setOnClickListener(tagDialogBuilder("math"));
         tagEnglish = findViewById(R.id.tagEnglish);
-        tagEnglish.setOnClickListener(this::onClickEnglish);
+        tagEnglish.setOnClickListener(tagDialogBuilder("english"));
         tagSocial = findViewById(R.id.tagSocial);
-        tagSocial.setOnClickListener(this::onClickSocial);
+        tagSocial.setOnClickListener(tagDialogBuilder("social"));
         tagScience = findViewById(R.id.tagScience);
-        tagScience.setOnClickListener(this::onClickScience);
+        tagScience.setOnClickListener(tagDialogBuilder("science"));
     }
 
-    private void onClickMath(View v){
-        //todo: make below TagDialog(string tag) method
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Math Tag");
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String username = user.getDisplayName();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("Users").document(username);
-        alert.setPositiveButton("Yes", (dialogInterface, i) -> {
-            docRef.update("math",true);
-            Toast.makeText(ChangeTagsActivity.this, "math tag set to true", Toast.LENGTH_LONG);
-        });
-        alert.setNegativeButton("No", (dialogInterface, i) -> {
-            docRef.update("math",false);
-            Toast.makeText(ChangeTagsActivity.this, "math tag set to false", Toast.LENGTH_LONG).show();
-            dialogInterface.cancel();
-        });
-        AlertDialog dialog = alert.create();
-        dialog.setOnShowListener(arg0 -> {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-        });
-        dialog.show();
-    }
-    private void onClickEnglish(View v){
-
-    }
-    private void onClickSocial(View v){
-
-    }
-    private void onClickScience(View v){
-
-    }
-}
+    private View.OnClickListener tagDialogBuilder(String tag) {
+        return new Button.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(ChangeTagsActivity.this);
+                alert.setTitle(tag + " Tag");
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String username = user.getDisplayName();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference docRef = db.collection("Users").document(username);
+                alert.setPositiveButton("Yes", (dialogInterface, i) -> {
+                    docRef.update(tag, true);
+                    Toast.makeText(ChangeTagsActivity.this, tag + " tag set to true", Toast.LENGTH_LONG);
+                });
+                alert.setNegativeButton("No", (dialogInterface, i) -> {
+                    docRef.update(tag, false);
+                    Toast.makeText(ChangeTagsActivity.this, tag + " tag set to false", Toast.LENGTH_LONG).show();
+                    dialogInterface.cancel();
+                });
+                AlertDialog dialog = alert.create();
+                dialog.setOnShowListener(arg0 -> {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                });
+                dialog.show();
+            }
+        };
+    }}
