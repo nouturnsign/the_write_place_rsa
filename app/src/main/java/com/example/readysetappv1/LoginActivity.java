@@ -59,9 +59,9 @@ public class LoginActivity extends AppCompatActivity {
     private void createAccount(String email, String password, String username) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> tags = new HashMap<>();
-        tags.put("english",true);
+        tags.put("eng",true);
         tags.put("math",true);
-        tags.put("social",true);
+        tags.put("hist",true);
         tags.put("science",true);
         final String WORKSPACE = "Users";
         db.collection(WORKSPACE).document(username).set(tags)

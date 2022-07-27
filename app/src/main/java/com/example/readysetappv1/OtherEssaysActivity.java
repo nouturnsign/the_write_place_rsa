@@ -1,5 +1,7 @@
 package com.example.readysetappv1;
 
+import static java.lang.Boolean.getBoolean;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +22,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +31,7 @@ import java.util.Objects;
 public class OtherEssaysActivity extends AppCompatActivity implements EssayListAdapter.ItemClickListener {
 
     private static final String TAG = "OtherEssaysActivity";
-
+    String username;
     private FirebaseUser mUser;
     private List<Map<String, String>> mDatabaseEssays;
 
@@ -51,11 +54,43 @@ public class OtherEssaysActivity extends AppCompatActivity implements EssayListA
         // define query
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-        Query tagQuery =
-                db
+
+        username = mUser.getDisplayName();
+        DocumentReference userRef = db.collection("Users").document(username);
+        Task<DocumentSnapshot> userDocTask = userRef.get();
+        userDocTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(TAG, "Successfully retrieved essays from database");
+            } else {
+                Log.i(TAG, "Failed to retrieve essays from database");
+            }
+        });
+        RunnableTaskDocumentSnapshot runnable = new RunnableTaskDocumentSnapshot(userDocTask);
+        Thread thread = new Thread(runnable);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            Log.w(TAG, "Failed to make document snapshot", e);
+        }
+        DocumentSnapshot documentSnapshot = runnable.getValue();
+        List<String> tagList = Arrays.asList("math", "eng", "hist", "science");
+        List<String> userTags = new ArrayList<>();
+        for (String tag: tagList) {
+            boolean tagStatus = documentSnapshot.getBoolean(tag);
+            Log.e(TAG,tag+tagStatus);
+            if (tagStatus==true) {
+                userTags.add(tag);
+            }
+        }
+        //Query  = citiesRef.whereIn("tag", x);
+
+
+        Query tagQuery = db
                 .collection("ECG") // TODO: make this vary by workspace and tag
                 .whereEqualTo("reviewer", null)
-                .whereNotEqualTo("submitter", mUser.getDisplayName());
+                .whereNotEqualTo("submitter", mUser.getDisplayName())
+                .whereIn("tag",userTags);
 
         // let adapter do the rest of the work
         EssayListAdapter adapter = new EssayListAdapter(this, tagQuery);

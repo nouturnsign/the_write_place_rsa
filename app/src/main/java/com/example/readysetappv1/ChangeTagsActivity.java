@@ -37,9 +37,9 @@ public class ChangeTagsActivity extends AppCompatActivity {
         tagMath = findViewById(R.id.tagMath);
         tagMath.setOnClickListener(tagDialogBuilder("math"));
         tagEnglish = findViewById(R.id.tagEnglish);
-        tagEnglish.setOnClickListener(tagDialogBuilder("english"));
+        tagEnglish.setOnClickListener(tagDialogBuilder("eng"));
         tagSocial = findViewById(R.id.tagSocial);
-        tagSocial.setOnClickListener(tagDialogBuilder("social"));
+        tagSocial.setOnClickListener(tagDialogBuilder("hist"));
         tagScience = findViewById(R.id.tagScience);
         tagScience.setOnClickListener(tagDialogBuilder("science"));
     }
