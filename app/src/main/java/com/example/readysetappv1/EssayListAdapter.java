@@ -27,13 +27,13 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
 
     private static final String TAG = "EssayListAdapter";
 
-    private final List<String> ATTRIBUTES = Arrays.asList("submitter", "reviewer", "date", "url", "tag"); // essayTitle at .getId()
-    private final List<Map<String, String>> mDatabaseEssays;
+    private final List<String> ATTRIBUTES = Arrays.asList("submitter", "reviewer", "date", "url", "tag", "complete"); // essayTitle at .getId()
+    private final List<Map<String, Object>> mDatabaseEssays;
     private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // List<Map<String, String>> is passed into the constructor
-    public EssayListAdapter(Context context, List<Map<String, String>> databaseEssays) {
+    public EssayListAdapter(Context context, List<Map<String, Object>> databaseEssays) {
         this.mInflater = LayoutInflater.from(context);
         this.mDatabaseEssays = databaseEssays;
     }
@@ -44,11 +44,11 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
         this.mDatabaseEssays = getDatabaseEssays(tagQuery);
     }
 
-    public List<Map<String, String>> getDatabaseEssays() {
+    public List<Map<String, Object>> getDatabaseEssays() {
         return mDatabaseEssays;
     }
 
-    private List<Map<String, String>> getDatabaseEssays(Query tagQuery) {
+    private List<Map<String, Object>> getDatabaseEssays(Query tagQuery) {
         Task<QuerySnapshot> tagQueryTask = tagQuery.get();
 
         tagQueryTask.addOnCompleteListener(task -> {
@@ -59,7 +59,7 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
             }
         });
 
-        List<Map<String, String>> databaseEssays = new ArrayList<>();
+        List<Map<String, Object>> databaseEssays = new ArrayList<>();
         RunnableTask runnable = new RunnableTask(tagQueryTask);
         Thread thread = new Thread(runnable);
         thread.start();
@@ -71,10 +71,10 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
         QuerySnapshot tagQuerySnapshot = runnable.getValue();
 
         for (DocumentSnapshot document : tagQuerySnapshot.getDocuments()) {
-            Map<String, String> documentAttributes = new HashMap<>();
+            Map<String, Object> documentAttributes = new HashMap<>();
             documentAttributes.put("essayTitle", document.getId());
             for (String attribute : ATTRIBUTES) {
-                documentAttributes.put(attribute, (String) document.get(attribute));
+                documentAttributes.put(attribute, document.get(attribute));
             }
             databaseEssays.add(documentAttributes);
         }
@@ -94,7 +94,7 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Map<String, String> review = mDatabaseEssays.get(position);
+        Map<String, Object> review = mDatabaseEssays.get(position);
         /*
             submitterUsername.add(document.get("username").toString());
             date.add(document.get("date").toString());
@@ -104,15 +104,16 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
         */
         String username;
         if (review.containsKey("submitter")) {
-            username = review.get("submitter");
+            username = (String) review.get("submitter");
         } else {
-            username = review.get("reviewer");
+            username = (String) review.get("reviewer");
         }
-        String date = review.get("date");
-        String essayTitle = review.get("essayTitle");
+        String date = (String) review.get("date");
+        String essayTitle = (String) review.get("essayTitle");
         // Log.v(TAG, username + " " + date + " " + essayTitle);
         // String profilePicture = review.get("profilePicture");
         // String tagPicture = review.get("tagPicture");
+        boolean complete = (boolean) review.get("complete");
         holder.usernameView.setText(username);
         holder.dateView.setText(date);
         holder.essayTitleView.setText(essayTitle);
@@ -121,6 +122,11 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
 //        holder.profilePictureView.setImageResource(Integer.parseInt(profilePicture));
 //        if (tagPicture == null) tagPicture = String.valueOf(R.drawable.engtag);
 //        holder.tagPictureView.setImageResource(Integer.parseInt(tagPicture));
+        if (complete) {
+            holder.checkmarkView.setImageResource(R.drawable.checkmark);
+        } else {
+            holder.checkmarkView.setImageResource(R.drawable.wcircle);
+        }
     }
 
     // total number of rows
@@ -143,6 +149,7 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
         TextView essayTitleView;
         ShapeableImageView profilePictureView;
         ImageView tagPictureView;
+        ImageView checkmarkView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -151,6 +158,7 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
             essayTitleView = itemView.findViewById(R.id.essayTitle);
             profilePictureView = itemView.findViewById(R.id.image_profile_picture);
             tagPictureView = itemView.findViewById(R.id.tagPicture);
+            checkmarkView = itemView.findViewById(R.id.checkmark);
             itemView.setOnClickListener(this);
         }
 
@@ -161,7 +169,7 @@ public class EssayListAdapter extends RecyclerView.Adapter<EssayListAdapter.View
     }
 
     // convenience method for getting data at click position
-    Map<String, String> getItem(int id) {
+    Map<String, Object> getItem(int id) {
         return mDatabaseEssays.get(id);
     }
 

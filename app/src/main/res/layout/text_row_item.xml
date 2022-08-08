@@ -90,4 +90,15 @@
         android:gravity="left"
         app:srcCompat="@drawable/engtag" />
 
+    <ImageView
+        android:id="@+id/checkmark"
+        android:layout_width="@dimen/profile_picture_diameter"
+        android:layout_height="@dimen/profile_picture_diameter"
+        android:layout_below="@id/essayPreview"
+        android:layout_toEndOf="@id/tagPicture"
+        android:layout_marginStart="190dp"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/checkmark" />
+
 </RelativeLayout>

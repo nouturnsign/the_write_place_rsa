@@ -1,8 +1,5 @@
 package com.example.readysetappv1;
 
-import static java.lang.Boolean.getBoolean;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,7 +19,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -33,7 +28,7 @@ public class OtherEssaysActivity extends AppCompatActivity implements EssayListA
     private static final String TAG = "OtherEssaysActivity";
     String username;
     private FirebaseUser mUser;
-    private List<Map<String, String>> mDatabaseEssays;
+    private List<Map<String, Object>> mDatabaseEssays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +98,7 @@ public class OtherEssaysActivity extends AppCompatActivity implements EssayListA
     public void onItemClick(View view, int position) {
         // firebase stuff
         // set review = user
-        String link = mDatabaseEssays.get(position).get("url");
+        String link = (String) mDatabaseEssays.get(position).get("url");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // asynchronously retrieve multiple documents
         Query tagQuery = db

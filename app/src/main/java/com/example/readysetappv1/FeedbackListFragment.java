@@ -17,8 +17,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,7 +35,7 @@ public class FeedbackListFragment extends Fragment implements EssayListAdapter.I
     private static final String ARG_PARAM1 = "workspace_index";
 
     // TODO: Rename and change types of parameters
-    private List<Map<String, String>> mDatabaseEssays;
+    private List<Map<String, Object>> mDatabaseEssays;
     private int mWorkspaceIndex;
 
     public FeedbackListFragment() {
@@ -104,7 +102,7 @@ public class FeedbackListFragment extends Fragment implements EssayListAdapter.I
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(getActivity(), FeedbackActivity.class);
-        intent.putExtra("url",mDatabaseEssays.get(position).get("url"));
+        intent.putExtra("url", (String) mDatabaseEssays.get(position).get("url"));
         startActivity(intent);
     }
 }

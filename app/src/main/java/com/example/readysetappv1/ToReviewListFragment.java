@@ -41,7 +41,7 @@ public class ToReviewListFragment extends Fragment implements EssayListAdapter.I
     private static final String ARG_PARAM1 = "databaseEssays";
 
     // TODO: Rename and change types of parameters
-    private List<Map<String, String>> mDatabaseEssays;
+    private List<Map<String, Object>> mDatabaseEssays;
 
     public ToReviewListFragment() {
         // Required empty public constructor
@@ -73,7 +73,7 @@ public class ToReviewListFragment extends Fragment implements EssayListAdapter.I
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             ArrayList<ParcelableEssay> parcelableEssayArrayList = getArguments().getParcelableArrayList(ARG_PARAM1);
-            mDatabaseEssays = new ArrayList<>();
+            mDatabaseEssays = new ArrayList<Map<String, Object>>();
             for (ParcelableEssay essay : parcelableEssayArrayList) {
                 mDatabaseEssays.add(essay.toHashMap());
             }
@@ -119,7 +119,7 @@ public class ToReviewListFragment extends Fragment implements EssayListAdapter.I
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(getActivity(), ReviewActivity.class);
-        intent.putExtra("url",mDatabaseEssays.get(position).get("url"));
+        intent.putExtra("url", (String) mDatabaseEssays.get(position).get("url"));
         startActivity(intent);
     }
 

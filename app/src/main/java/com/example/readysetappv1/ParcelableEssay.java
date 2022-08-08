@@ -33,8 +33,8 @@ public class ParcelableEssay implements Parcelable {
         this.url = data[3];
     }
 
-    public HashMap<String, String> toHashMap() {
-        HashMap<String, String> essays = new HashMap<>();
+    public HashMap<String, Object> toHashMap() {
+        HashMap<String, Object> essays = new HashMap<>();
         essays.put("username", this.username);
         essays.put("date", this.date);
         essays.put("essayTitle", this.essayTitle);
