@@ -55,9 +55,9 @@ public class OtherEssaysActivity extends AppCompatActivity implements EssayListA
         Task<DocumentSnapshot> userDocTask = userRef.get();
         userDocTask.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Log.i(TAG, "Successfully retrieved essays from database");
+                Log.i(TAG, "Successfully retrieved user from database");
             } else {
-                Log.i(TAG, "Failed to retrieve essays from database");
+                Log.i(TAG, "Failed to retrieve user from database");
             }
         });
         RunnableTaskDocumentSnapshot runnable = new RunnableTaskDocumentSnapshot(userDocTask);
@@ -68,19 +68,20 @@ public class OtherEssaysActivity extends AppCompatActivity implements EssayListA
         } catch (InterruptedException e) {
             Log.w(TAG, "Failed to make document snapshot", e);
         }
+        // TODO: add better checking for validity of user documentSnapshot
         DocumentSnapshot documentSnapshot = runnable.getValue();
+        // TODO: refactor tagList as static resource
         List<String> tagList = Arrays.asList("math", "eng", "hist", "science");
         List<String> userTags = new ArrayList<>();
         for (String tag: tagList) {
-            boolean tagStatus = documentSnapshot.getBoolean(tag);
-            Log.e(TAG,tag+tagStatus);
-            if (tagStatus==true) {
+            boolean tagStatus = Boolean.TRUE.equals(documentSnapshot.getBoolean(tag));
+            if (tagStatus) {
                 userTags.add(tag);
             }
         }
         //Query  = citiesRef.whereIn("tag", x);
 
-
+        // TODO: assert userTags is nonempty
         Query tagQuery = db
                 .collection("ECG") // TODO: make this vary by workspace and tag
                 .whereEqualTo("reviewer", null)
